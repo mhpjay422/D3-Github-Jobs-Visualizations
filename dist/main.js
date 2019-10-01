@@ -29242,7 +29242,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const square = d3__WEBPACK_IMPORTED_MODULE_0__["selectAll"]("rect");
-square.style("fill", "blue");
+square.style("fill", "red");
 
 
 
