@@ -29241,10 +29241,36 @@ __webpack_require__.r(__webpack_exports__);
 //src/index.js
 
 
-const square = d3__WEBPACK_IMPORTED_MODULE_0__["selectAll"]("rect");
-square.style("fill", "red");
+const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])('svg')
 
+const width = +svg.attr('width');
+const height = +svg.attr('height');
 
+const render = data => {
+    const xValue = d => d.population;
+    const yValue = d => d.country;    
+    
+    const xScale = Object(d3__WEBPACK_IMPORTED_MODULE_0__["scaleLinear"])()
+        .domain([0, Object(d3__WEBPACK_IMPORTED_MODULE_0__["max"])(data, d => xValue(d))])
+        .range([0, width]);
+
+    const yScale = Object(d3__WEBPACK_IMPORTED_MODULE_0__["scaleBand"])()
+        .domain(data.map(d => yValue(d)))
+        .range([0, height]);    
+
+    svg.selectAll('rect').data(data)
+        .enter().append('rect')
+            .attr('y', d => yScale(yValue(d)))
+            .attr('width', d => xScale(xValue(d)))
+            .attr('height', yScale.bandwidth());
+}
+
+Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])('data.csv').then(data => {
+    data.forEach(d => {
+        d.population = +d.population * 1000;
+    });
+    render(data);
+})
 
 /***/ })
 
