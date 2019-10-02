@@ -1,0 +1,31 @@
+{
+  "name": "D3-Github-Jobs-Visualizations",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "babel-loader": "^8.0.6",
+    "d3": "^5.12.0",
+    "http-server": "^0.11.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1",
+    "webpack": "^4.41.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "server": "webpack-dev-server",
+    "webpack": "webpack", 
+    "start": "webpack --mode=development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhpjay422/D3-Github-Jobs-Visualizations.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhpjay422/D3-Github-Jobs-Visualizations/issues"
+  },
+  "homepage": "https://github.com/mhpjay422/D3-Github-Jobs-Visualizations#readme"
+}
