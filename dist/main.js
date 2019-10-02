@@ -29296,35 +29296,32 @@ const render = data => {
         .attr('fill', 'black')
         .text('POP') 
 
-    const bar = g.append('g')
-        .data(data)
-    bar
-        .enter().append('g')
-        .merge(bar)
-    bar.exit().remove();
+    const barsG = g.append('g')
 
-    const rects = bar.selectAll('rect')
-        .data(data);
-    rects
-        .enter().append('rect')
+    const bars = barsG.selectAll('g')
+        .data(data)
+    const barsEnter = bars.enter().append('g')
+    barsEnter
+        .merge(bars)
+    bars.exit().remove();
+
+    barsEnter.append('rect')
             .attr('y', d => yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
-        .merge(rects)
+        .merge(bars.select('rect'))
             .transition().duration(1500)
             .attr('width', d => xScale(xValue(d)))
-    rects.exit().remove();    
 
-    const rectText = bar.selectAll('text')
-        .data(data)
-    rectText
-        .enter().append('text')
-            .attr('class', 'rectText')
-            .attr('x', d => xScale(xValue(d)) - 25)
-            .attr('y', d => yScale(yValue(d)) + 20)
-            .attr('fill', 'white')
-            .attr('text-anchor', 'middle')
-            .text(d => xAxisTickFormat(xValue(d)))
-    rectText.exit().remove();
+
+    barsEnter.append('text')
+        .attr('class', 'rectText')
+        .attr('fill', 'white')
+        .attr('text-anchor', 'middle')
+        .text(d => xAxisTickFormat(xValue(d)))
+        .attr('y', d => yScale(yValue(d)) + 20)
+    .merge(bars.select('text'))
+        .transition().duration(1500)
+        .attr('x', d => xScale(xValue(d)) - 25)
 
 
     svg.append('text')
