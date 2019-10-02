@@ -29245,13 +29245,18 @@ const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])('svg')
 
 const width = +svg.attr('width');
 const height = +svg.attr('height');
+const xValue = d => d.population;
+const yValue = d => d.country;
+const margin = {
+    top: 50,
+    right: 40,
+    bottom: 70,
+    left: 200
+};
+const innerWidth = width - margin.left - margin.right;
+const innerHeight = height - margin.top - margin.bottom;
 
 const render = data => {
-    const xValue = d => d.population;
-    const yValue = d => d.country;  
-    const margin = { top: 50, right: 40, bottom: 70, left: 200 };  
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
 
     const xScale = Object(d3__WEBPACK_IMPORTED_MODULE_0__["scaleLinear"])()
         .domain([0, Object(d3__WEBPACK_IMPORTED_MODULE_0__["max"])(data, xValue)])
@@ -29290,27 +29295,33 @@ const render = data => {
         .attr('fill', 'black')
         .text('POP')
 
-    g.selectAll('rect').data(data)
+    const rects = g.selectAll('rect')
+        .data(data)
+    rects
         .enter().append('rect')
             .attr('y', d => yScale(yValue(d)))
-            .attr('width', d => xScale(xValue(d)))
             .attr('height', yScale.bandwidth())
-            .attr('fill', 'red');
+        .merge(rects)
+        .transition().duration(1500)
+            .attr('width', d => xScale(xValue(d)))
+    rects.exit().remove();
 
-    g.append('text')
+    svg.append('text')
+            .attr('class', 'rectText')
+            .attr('y', height / 2)
+            .attr('x', 100)
+            .text('bob')
+
+    svg.append('text')
         .attr('class', 'title')
-         .attr('y',-10)
+        .attr('x', width / 2)
+        .attr('y',45)
         .text('My Bar Chart')
 }
-// let mygeodata = { data: 'https://jobs.github.com/positions.json'}
-
-// console.log(mygeodata.data);
-
 
 Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])('data.csv').then(data => {
     data.forEach(d => {
-        console.log(d);
-        d.population = +d.population * 1000;
+         d.population = +d.population * 1000;
     });
     render(data);
 })
