@@ -7,9 +7,7 @@ import {
     max, 
     axisLeft, 
     axisBottom, 
-    format, 
-    json, 
-    fetch
+    format
 } from 'd3';
 
 const svg = select('svg')
@@ -37,17 +35,18 @@ const render = data => {
         .domain(data.map(yValue))
         .range([0, innerHeight])
         .padding(0.1);
-    
-    const g = svg.append('g')
-        .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const xAxisTickFormat = number =>
         format('.3s')(number)
-        .replace('G', 'B');
+        .replace('G', 'B')
+        .replace('M', 'M');
 
     const xAxis = axisBottom(xScale)
         .tickFormat(xAxisTickFormat)
         .tickSize(-innerHeight)
+
+    const g = svg.append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     g.append('g')
         .call(axisLeft(yScale))
@@ -64,24 +63,38 @@ const render = data => {
         .attr('y', 70)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
-        .text('POP')
+        .text('POP') 
 
-    const rects = g.selectAll('rect')
+    const bar = g.append('g')
         .data(data)
+    bar
+        .enter().append('g')
+        .merge(bar)
+    bar.exit().remove();
+
+    const rects = bar.selectAll('rect')
+        .data(data);
     rects
         .enter().append('rect')
             .attr('y', d => yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
         .merge(rects)
-        .transition().duration(1500)
+            .transition().duration(1500)
             .attr('width', d => xScale(xValue(d)))
-    rects.exit().remove();
+    rects.exit().remove();    
 
-    svg.append('text')
+    const rectText = bar.selectAll('text')
+        .data(data)
+    rectText
+        .enter().append('text')
             .attr('class', 'rectText')
-            .attr('y', height / 2)
-            .attr('x', 100)
-            .text('bob')
+            .attr('x', d => xScale(xValue(d)) - 25)
+            .attr('y', d => yScale(yValue(d)) + 20)
+            .attr('fill', 'white')
+            .attr('text-anchor', 'middle')
+            .text(d => xAxisTickFormat(xValue(d)))
+    rectText.exit().remove();
+
 
     svg.append('text')
         .attr('class', 'title')
