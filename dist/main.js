@@ -29241,6 +29241,17 @@ __webpack_require__.r(__webpack_exports__);
 //src/index.js
 
 
+let data = null;
+
+Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])('data.csv').then(importData => {
+    importData.forEach(d => {
+        d.population = +d.population * 1000;
+        d.id = d.population;
+    });
+    data = importData;
+    render(importData);
+})
+
 const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])('svg')
 
 const width = +svg.attr('width');
@@ -29255,8 +29266,16 @@ const margin = {
 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
+let selectedRect = null;
+
+
 
 const render = data => {
+
+    const onClick = id => {
+        selectedRect = id;
+        highlightBar(data);
+    }
 
     const xScale = Object(d3__WEBPACK_IMPORTED_MODULE_0__["scaleLinear"])()
         .domain([0, Object(d3__WEBPACK_IMPORTED_MODULE_0__["max"])(data, xValue)])
@@ -29296,22 +29315,32 @@ const render = data => {
         .attr('fill', 'black')
         .text('POP') 
 
+
     const barsG = g.append('g')
 
     const bars = barsG.selectAll('g')
-        .data(data)
+        .data(data, d => d.id)
+
     const barsEnter = bars.enter().append('g')
     barsEnter
         .merge(bars)
+            .on('click', d => { onClick(d.id); })
     bars.exit().remove();
 
+    
     barsEnter.append('rect')
-            .attr('y', d => yScale(yValue(d)))
-            .attr('height', yScale.bandwidth())
-        .merge(bars.select('rect'))
+        .attr('y', d => yScale(yValue(d)))
+        .attr('height', yScale.bandwidth())
+    .merge(bars.select('rect'))
             .transition().duration(1500)
-            .attr('width', d => xScale(xValue(d)))
+            .attr('width', d => xScale(xValue(d)));
 
+    const highlightBar = () => barsEnter.select('rect')
+        .attr('stroke-width', 5)
+        .attr('stroke', d => d.id === selectedRect ?
+            'black' :
+            'none'
+        )
 
     barsEnter.append('text')
         .attr('class', 'rectText')
@@ -29320,23 +29349,18 @@ const render = data => {
         .text(d => xAxisTickFormat(xValue(d)))
         .attr('y', d => yScale(yValue(d)) + 20)
     .merge(bars.select('text'))
-        .transition().duration(1500)
-        .attr('x', d => xScale(xValue(d)) - 25)
-
-
+            .transition().duration(1500)
+            .attr('x', d => xScale(xValue(d)) - 25);
+        
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2)
         .attr('y',45)
         .text('My Bar Chart')
+
 }
 
-Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])('data.csv').then(data => {
-    data.forEach(d => {
-         d.population = +d.population * 1000;
-    });
-    render(data);
-})
+
 
 /***/ })
 
