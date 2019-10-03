@@ -37,7 +37,8 @@ const margin = {
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 let selectedRect = null;
-let isSelected = false;
+let willHighlight = null;
+let shoudldHighlight = false;
 
 
 
@@ -45,8 +46,15 @@ const render = data => {
 
     const onClick = id => {
         selectedRect = id;
-        isSelected = !isSelected
-        highlightBar(data);
+        
+        if (selectedRect === willHighlight) {
+            shoudldHighlight = false;
+            willHighlight = null;
+        } else {
+            shoudldHighlight = true;
+            willHighlight = id;
+        }
+        highlightBar();
     }
 
     const xScale = scaleLinear()
@@ -109,7 +117,8 @@ const render = data => {
 
     const highlightBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
-        .attr('stroke', d => d.id === selectedRect && !isSelected
+        .attr('stroke', d => 
+        d.id === selectedRect && shoudldHighlight
             ? 'black' 
             : 'none'
         )
