@@ -37,6 +37,7 @@ const margin = {
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 let selectedRect = null;
+let isSelected = false;
 
 
 
@@ -44,6 +45,7 @@ const render = data => {
 
     const onClick = id => {
         selectedRect = id;
+        isSelected = !isSelected
         highlightBar(data);
     }
 
@@ -107,9 +109,9 @@ const render = data => {
 
     const highlightBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
-        .attr('stroke', d => d.id === selectedRect ?
-            'black' :
-            'none'
+        .attr('stroke', d => d.id === selectedRect && !isSelected
+            ? 'black' 
+            : 'none'
         )
 
     barsEnter.append('text')
