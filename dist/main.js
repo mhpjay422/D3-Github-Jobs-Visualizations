@@ -29268,22 +29268,35 @@ const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 let selectedRect = null;
 let willHighlight = null;
-let shoudldHighlight = false;
+let shouldToggle = false;
+let hoverRect = null;
 
 
 
 const render = data => {
 
-    const onClick = id => {
+    const toggleSelectedBar = id => {
         selectedRect = id;
         
         if (selectedRect === willHighlight) {
-            shoudldHighlight = false;
+            shouldToggle = false;
             willHighlight = null;
         } else {
-            shoudldHighlight = true;
+            shouldToggle = true;
             willHighlight = id;
         }
+        toggleBar();
+    }
+
+    const toggleHighlight = id => {
+        console.log(id);
+        
+        if(id) {
+            hoverRect = id;
+        } else {
+            hoverRect = null;
+        }
+
         highlightBar();
     }
 
@@ -29334,7 +29347,9 @@ const render = data => {
     const barsEnter = bars.enter().append('g')
     barsEnter
         .merge(bars)
-            .on('click', d => { onClick(d.id); })
+            .on('click', d => { toggleSelectedBar(d.id); })
+            .on('mouseover', d => { toggleHighlight(d.id); })
+            .on('mouseout', () => { toggleHighlight(); })
     bars.exit().remove();
 
     
@@ -29345,13 +29360,25 @@ const render = data => {
             .transition().duration(1500)
             .attr('width', d => xScale(xValue(d)));
 
-    const highlightBar = () => barsEnter.select('rect')
+    const toggleBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
         .attr('stroke', d => 
-        d.id === selectedRect && shoudldHighlight
+        d.id === selectedRect && shouldToggle
             ? 'black' 
             : 'none'
         )
+
+    const highlightBar = () => {
+        barsEnter.select('rect')
+            .attr('opacity', d =>
+                d.id === hoverRect || hoverRect === null ?
+                1 :
+                .4
+            )
+        
+    }
+    
+    
 
     barsEnter.append('text')
         .attr('class', 'rectText')
