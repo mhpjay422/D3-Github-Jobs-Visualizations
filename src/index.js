@@ -13,6 +13,9 @@ import {
     ease
 } from 'd3';
 
+
+
+
 let data = null;
 
 csv('data.csv').then(importData => {
@@ -32,15 +35,15 @@ const svg = select('svg')
 
 const g = svg.append('g')
 
-const width = +svg.attr('width');
-const height = +svg.attr('height');
+const width = document.body.clientWidth
+const height = document.body.clientHeight
 const xValue = d => d.population;
 const yValue = d => d.country;
 const margin = {
     top: 60,
-    right: 40,
-    bottom: 70,
-    left: 200
+    right: 60,
+    bottom: 100,
+    left: 220
 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
@@ -48,6 +51,10 @@ let selectedRect = null;
 let willHighlight = null;
 let shouldToggle = false;
 let hoverRect = null;
+
+svg
+    .attr('width', width)
+    .attr('height', height)
 
 
 
@@ -138,7 +145,7 @@ const render = data => {
 
     xAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', 65)
+        .attr('y', 60)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
         .text('POP') 
@@ -209,8 +216,9 @@ const render = data => {
         
     svg.append('text')
         .attr('class', 'title')
-        .attr('x', width / 2)
+        .attr('x', width / 2) 
         .attr('y', 50)
+        .attr('text-anchor', 'middle')
         .text('My Bar Chart')
 
 }
