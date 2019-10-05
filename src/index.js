@@ -207,10 +207,10 @@ const render = data => {
             .transition().duration(1500)
             .attr('x', d => xScale(xValue(d)) - 25);
         
-    g.append('text')
+    svg.append('text')
         .attr('class', 'title')
-        .attr('x', width / 4)
-        .attr('y', -10)
+        .attr('x', width / 2)
+        .attr('y', 50)
         .text('My Bar Chart')
 
 }
