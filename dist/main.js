@@ -29259,10 +29259,6 @@ let tooltip = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])("body").append("
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])('svg')
-
-const g = svg.append('g')
-
 const width = document.body.clientWidth
 const height = document.body.clientHeight
 const xValue = d => d.population;
@@ -29280,10 +29276,11 @@ let willHighlight = null;
 let shouldToggle = false;
 let hoverRect = null;
 
-svg
+const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])('svg')
+const zoomG = svg
     .attr('width', width)
     .attr('height', height)
-
+.append('g');
 
 
 const render = data => {
@@ -29331,11 +29328,11 @@ const render = data => {
         .tickFormat(xAxisTickFormat)
         .tickSize(-innerHeight)
 
-    const g = svg.append('g')
+    const g = zoomG.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     svg.call(Object(d3__WEBPACK_IMPORTED_MODULE_0__["zoom"])().on('zoom', () => {
-        g.attr('transform', d3__WEBPACK_IMPORTED_MODULE_0__["event"].transform)
+        zoomG.attr('transform', d3__WEBPACK_IMPORTED_MODULE_0__["event"].transform)
     }))
 
     const leftAxis = g.append('g')
@@ -29437,15 +29434,15 @@ const render = data => {
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
         .text(d => xAxisTickFormat(xValue(d)))
-        .attr('y', d => yScale(yValue(d)) + 20)
+        .attr('y', d => yScale(yValue(d)) + 30)
     .merge(bars.select('text'))
             .transition().duration(1500)
             .attr('x', d => xScale(xValue(d)) - 25);
         
-    svg.append('text')
+    g.append('text')
         .attr('class', 'title')
-        .attr('x', width / 2) 
-        .attr('y', 50)
+        .attr('x', width / 3) 
+        .attr('y', -10)
         .attr('text-anchor', 'middle')
         .text('My Bar Chart')
 
