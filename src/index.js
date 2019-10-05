@@ -7,7 +7,8 @@ import {
     max, 
     axisLeft, 
     axisBottom, 
-    format, 
+    format,
+    zoom, 
     ease
 } from 'd3';
 
@@ -21,6 +22,10 @@ csv('data.csv').then(importData => {
     data = importData;
     render(importData);
 })
+
+let tooltip = select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 const svg = select('svg')
 
@@ -59,7 +64,6 @@ const render = data => {
     }
 
     const toggleHighlight = id => {
-        console.log(id);
         
         if(id) {
             hoverRect = id;
@@ -68,6 +72,7 @@ const render = data => {
         }
 
         highlightBar();
+        dimAxisText();
     }
 
     const xScale = scaleLinear()
@@ -91,12 +96,35 @@ const render = data => {
     const g = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    g.append('g')
+    const leftAxis = g.append('g')
+    leftAxis
         .call(axisLeft(yScale))
         .selectAll('.domain, .tick line')
             .remove();
 
+    leftAxis.selectAll('text')
+        .attr('fill', '#635F5D')
+        .attr('font-size', '2.7em')
+
+    const dimAxisText = () => {
+
+        leftAxis.selectAll('text')
+            .attr('fill', () =>
+                hoverRect === null ?
+                '#635F5D':
+                'lightgrey'
+            )
+        xAxisG.selectAll('text')
+            .attr('fill', () =>
+                hoverRect === null ?
+                '#635F5D' :
+                'lightgrey'
+            )
+    }
+    
+
     const xAxisG = g.append('g').call(xAxis)
+        .attr('class', 'bottomtext')
         .attr('transform', `translate(0, ${innerHeight})`)
 
     xAxisG.select('.domain').remove();
@@ -115,14 +143,28 @@ const render = data => {
         .data(data, d => d.id)
 
     const barsEnter = bars.enter().append('g')
+
     barsEnter
         .merge(bars)
             .on('click', d => { toggleSelectedBar(d.id); })
-            .on('mouseover', d => { toggleHighlight(d.id); })
-            .on('mouseout', () => { toggleHighlight(); })
+            .on('mouseover', d => { 
+                toggleHighlight(d.id);
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9)
+                tooltip.html("hello")
+                    .style("left", "10px")
+                    .style("top", "10px");
+                    // .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on('mouseout', () => { 
+                toggleHighlight(null);
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
     bars.exit().remove();
 
-    
     barsEnter.append('rect')
         .attr('y', d => yScale(yValue(d)))
         .attr('height', yScale.bandwidth())
@@ -139,17 +181,15 @@ const render = data => {
         )
 
     const highlightBar = () => {
+
         barsEnter.select('rect')
             .attr('opacity', d =>
                 d.id === hoverRect || hoverRect === null ?
                 1 :
                 .4
             )
-        
     }
     
-    
-
     barsEnter.append('text')
         .attr('class', 'rectText')
         .attr('fill', 'white')
