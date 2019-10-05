@@ -9,6 +9,7 @@ import {
     axisBottom, 
     format,
     zoom, 
+    event,
     ease
 } from 'd3';
 
@@ -29,12 +30,14 @@ let tooltip = select("body").append("div")
 
 const svg = select('svg')
 
+const g = svg.append('g')
+
 const width = +svg.attr('width');
 const height = +svg.attr('height');
 const xValue = d => d.population;
 const yValue = d => d.country;
 const margin = {
-    top: 50,
+    top: 60,
     right: 40,
     bottom: 70,
     left: 200
@@ -96,6 +99,10 @@ const render = data => {
     const g = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    svg.call(zoom().on('zoom', () => {
+        g.attr('transform', event.transform)
+    }))
+
     const leftAxis = g.append('g')
     leftAxis
         .call(axisLeft(yScale))
@@ -131,7 +138,7 @@ const render = data => {
 
     xAxisG.append('text')
         .attr('class', 'axis-label')
-        .attr('y', 70)
+        .attr('y', 65)
         .attr('x', innerWidth / 2)
         .attr('fill', 'black')
         .text('POP') 
@@ -200,10 +207,10 @@ const render = data => {
             .transition().duration(1500)
             .attr('x', d => xScale(xValue(d)) - 25);
         
-    svg.append('text')
+    g.append('text')
         .attr('class', 'title')
-        .attr('x', width / 2)
-        .attr('y',45)
+        .attr('x', width / 4)
+        .attr('y', -10)
         .text('My Bar Chart')
 
 }
