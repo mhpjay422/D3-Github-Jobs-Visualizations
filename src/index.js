@@ -76,7 +76,13 @@ const render = data => {
         }
 
         highlightBar();
-        dimAxisText(id);
+
+        if(hoverRect) {
+            dimAxisText(id);
+        } else {
+            resetAxisText()
+        }
+        
     }
 
     const xScale = scaleLinear()
@@ -117,14 +123,19 @@ const render = data => {
 
     const dimAxisText = id => {
 
-        leftAxis.selectAll('.tick')
-            .filter(d => d !== id )
-            .select('text')
-            .attr('fill', () =>
-                hoverRect === null ?
-                '#635F5D' :
-                'lightgrey'
-            )
+        leftAxis.selectAll('text')
+            .filter(d => d === id )
+            .attr('fill', 'black')
+            .attr('font-weight', 'bold')
+
+        leftAxis.selectAll('text')
+            .filter(d => d !== id)
+            .attr('fill', 'lightgrey')
+    }
+
+    const resetAxisText = () => {
+        leftAxis.selectAll('text')
+            .attr('fill', '#635F5D')
     }
     
 
