@@ -13,15 +13,12 @@ import {
     ease
 } from 'd3';
 
-
-
-
 let data = null;
 
 csv('data.csv').then(importData => {
     importData.forEach(d => {
         d.population = +d.population * 1000;
-        d.id = d.population;
+        d.id = d.country;
     });
     data = importData;
     render(importData);
@@ -79,7 +76,7 @@ const render = data => {
         }
 
         highlightBar();
-        dimAxisText();
+        dimAxisText(id);
     }
 
     const xScale = scaleLinear()
@@ -94,7 +91,8 @@ const render = data => {
     const xAxisTickFormat = number =>
         format('.3s')(number)
         .replace('G', 'B')
-        .replace('M', 'M');
+        .replace('M', 'M')
+        .replace('0.00', '0');
 
     const xAxis = axisBottom(xScale)
         .tickFormat(xAxisTickFormat)
@@ -117,15 +115,11 @@ const render = data => {
         .attr('fill', '#635F5D')
         .attr('font-size', '2.7em')
 
-    const dimAxisText = () => {
+    const dimAxisText = id => {
 
-        leftAxis.selectAll('text')
-            .attr('fill', () =>
-                hoverRect === null ?
-                '#635F5D':
-                'lightgrey'
-            )
-        xAxisG.selectAll('text')
+        leftAxis.selectAll('.tick')
+            .filter(d => d !== id )
+            .select('text')
             .attr('fill', () =>
                 hoverRect === null ?
                 '#635F5D' :
@@ -156,6 +150,7 @@ const render = data => {
     const barsEnter = bars.enter().append('g')
 
     barsEnter
+        .attr('class', 'bars')
         .merge(bars)
             .on('click', d => { toggleSelectedBar(d.id); })
             .on('mouseover', d => { 
@@ -217,6 +212,5 @@ const render = data => {
         .attr('y', -10)
         .attr('text-anchor', 'middle')
         .text('My Bar Chart')
-
 }
 

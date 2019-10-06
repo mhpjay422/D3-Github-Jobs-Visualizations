@@ -8,12 +8,17 @@ body {
     overflow: hidden;
 }
 
-rect {
-    fill: steelblue;
+text {
+    font-family: 'Red Hat Display',sans-serif;
+    pointer-events: none;
 }
 
-text {
-    font-family: sans-serif;
+.bars {
+    cursor: pointer;
+}
+
+rect {
+    fill: steelblue;
 }
 
 .rectText {
