@@ -17,12 +17,11 @@ text {
     cursor: pointer;
 }
 
-rect {
+.rect {
     fill: steelblue;
 }
 
 .rectText {
-    font-family: sans-serif;
     font-size: .8em;
 }
 
@@ -36,7 +35,7 @@ rect {
 }
 
 .axis-label {
-    fill: #8E8883;
+    fill: #635F5D;
     font-size: 2em;
 }
 

@@ -68,21 +68,14 @@ const render = data => {
     }
 
     const toggleHighlight = id => {
-        
         if(id) {
             hoverRect = id;
-        } else {
-            hoverRect = null;
-        }
-
-        highlightBar();
-
-        if(hoverRect) {
             dimAxisText(id);
         } else {
+            hoverRect = null;
             resetAxisText()
         }
-        
+        highlightBar(); 
     }
 
     const xScale = scaleLinear()
@@ -149,7 +142,7 @@ const render = data => {
         .attr('class', 'axis-label')
         .attr('y', 60)
         .attr('x', innerWidth / 2)
-        .attr('fill', 'black')
+        .attr('fill', '#635F5D')
         .text('POP') 
 
 
@@ -183,11 +176,12 @@ const render = data => {
     bars.exit().remove();
 
     barsEnter.append('rect')
-        .attr('y', d => yScale(yValue(d)))
-        .attr('height', yScale.bandwidth())
-    .merge(bars.select('rect'))
-            .transition().duration(1500)
-            .attr('width', d => xScale(xValue(d)));
+        .attr('class', 'rect')
+            .attr('y', d => yScale(yValue(d)))
+            .attr('height', yScale.bandwidth())
+        .merge(bars.select('rect'))
+                .transition().duration(1500)
+                .attr('width', d => xScale(xValue(d)));
 
     const toggleBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
@@ -201,9 +195,9 @@ const render = data => {
 
         barsEnter.select('rect')
             .attr('opacity', d =>
-                d.id === hoverRect || hoverRect === null ?
-                1 :
-                .4
+                d.id === hoverRect || hoverRect === null 
+                ? 1 
+                : .4
             )
     }
     
@@ -222,6 +216,6 @@ const render = data => {
         .attr('x', width / 3) 
         .attr('y', -10)
         .attr('text-anchor', 'middle')
-        .text('My Bar Chart')
+        .text('My Bar Charts')
 }
 

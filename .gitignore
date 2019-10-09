@@ -9,6 +9,12 @@
 bundle.js
 bundle.js.map
 
+/.dist
+main.js
+main.js.map
+
+
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
