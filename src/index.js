@@ -10,6 +10,14 @@ import {
     format,
     zoom, 
     event,
+    scaleOrdinal,
+    schemeCategory10,
+    schemeSpectral,
+    scaleSequential,
+    interpolateRainbow,
+    interpolate,
+    interpolateBlues,
+    schemeBlues,
     ease
 } from 'd3';
 
@@ -175,10 +183,22 @@ const render = data => {
             })
     bars.exit().remove();
 
+    console.log();
+
+
+
+    const colorScale = scaleOrdinal()
+    const colorValue = d => d.country 
+
+    colorScale
+        .domain(data.map(colorValue).reverse)
+        .range(schemeCategory10)
+    
     barsEnter.append('rect')
         .attr('class', 'rect')
             .attr('y', d => yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
+            .attr('fill', d => colorScale(colorValue(d)))
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => xScale(xValue(d)));

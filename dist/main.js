@@ -29403,10 +29403,22 @@ const render = data => {
             })
     bars.exit().remove();
 
+    console.log();
+
+
+
+    const colorScale = Object(d3__WEBPACK_IMPORTED_MODULE_0__["scaleOrdinal"])()
+    const colorValue = d => d.country 
+
+    colorScale
+        .domain(data.map(colorValue).reverse)
+        .range(d3__WEBPACK_IMPORTED_MODULE_0__["schemeCategory10"])
+    
     barsEnter.append('rect')
         .attr('class', 'rect')
             .attr('y', d => yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
+            .attr('fill', d => colorScale(colorValue(d)))
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => xScale(xValue(d)));
