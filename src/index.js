@@ -12,25 +12,40 @@ import {
     event,
     scaleOrdinal,
     schemeCategory10,
-    schemeSpectral,
-    scaleSequential,
-    interpolateRainbow,
-    interpolate,
-    interpolateBlues,
-    schemeBlues,
     ease
 } from 'd3';
 
-let data = null;
+// let jobs = require('../server.js')
 
-csv('data.csv').then(importData => {
-    importData.forEach(d => {
-        d.population = +d.population * 1000;
-        d.id = d.country;
-    });
-    data = importData;
-    render(importData);
-})
+// console.log(jobs);
+
+let data = {};
+
+getData();
+async function getData() {
+    const response = await fetch('/api');
+    const json = await response.json();
+    console.log(json);
+    
+    json.forEach(post => {
+        let date = post.created_at.split(" ");
+        let formatedDate = `${date[1]}-${date[2]}-${date[5]}`
+        
+        data[post.id] = formatedDate;
+    }) 
+}
+
+console.log(data);
+
+
+// csv('data.csv').then(importData => {
+//     importData.forEach(d => {
+//         d.population = +d.population * 1000;
+//         d.id = d.country;
+//     });
+//     data = importData;
+//     render(importData);
+// })
 
 let tooltip = select("body").append("div")
     .attr("class", "tooltip")
@@ -183,22 +198,16 @@ const render = data => {
             })
     bars.exit().remove();
 
-    console.log();
-
-
-
     const colorScale = scaleOrdinal()
-    const colorValue = d => d.country 
 
     colorScale
-        .domain(data.map(colorValue).reverse)
         .range(schemeCategory10)
     
     barsEnter.append('rect')
         .attr('class', 'rect')
             .attr('y', d => yScale(yValue(d)))
             .attr('height', yScale.bandwidth())
-            .attr('fill', d => colorScale(colorValue(d)))
+            .attr('fill', d => colorScale(yValue(d)))
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => xScale(xValue(d)));
@@ -226,7 +235,7 @@ const render = data => {
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
         .text(d => xAxisTickFormat(xValue(d)))
-        .attr('y', d => yScale(yValue(d)) + 30)
+        .attr('y', d => yScale(yValue(d)) + 50)
     .merge(bars.select('text'))
             .transition().duration(1500)
             .attr('x', d => xScale(xValue(d)) - 25);
