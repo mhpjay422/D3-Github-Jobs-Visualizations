@@ -15,17 +15,91 @@ app.use(express.static(path.join(__dirname, "public")))
 
 // let results = null;
 
-app.get('/api', (request, response) => {
-     fetch(`https://jobs.github.com/positions.json?page=1`)
-            .then((response) => {
-                // console.log(response);
 
-                return response.text();
-            }).then((body) => {
-                results = JSON.parse(body)
-                // console.log(results) // logs to server
-                response.send(results) // sends to frontend
-            });
+
+
+
+
+app.get('/api', (request, response) => {
+
+    fetchData = () => {
+        const urls = [
+            "https://jobs.github.com/positions.json?page=1",
+            "https://jobs.github.com/positions.json?page=2",
+            "https://jobs.github.com/positions.json?page=3",
+            "https://jobs.github.com/positions.json?page=4",
+            "https://jobs.github.com/positions.json?page=5",
+            "https://jobs.github.com/positions.json?page=6",
+            "https://jobs.github.com/positions.json?page=7",
+            "https://jobs.github.com/positions.json?page=8",
+            "https://jobs.github.com/positions.json?page=9",
+            "https://jobs.github.com/positions.json?page=10"
+        ];
+
+        const allRequests = urls.map(url =>
+            fetch(url).then(response => response.json())
+        );
+
+        return Promise.all(allRequests);
+    };
+
+    fetchData().then(arrayOfResponses =>
+        response.send(arrayOfResponses)
+    );
+
+
+    // let urls = [];
+
+    // for (let index = 1; index < 10; index++) {
+
+    //     let url = `https://jobs.github.com/positions.json?page=${index}`
+    //     fetch(url).then((response) => {
+    //         return response.text();
+    //     }).then((body) => {
+    //         results = JSON.parse(body);
+
+    //         if (results !== []) {
+    //             urls.push(url)
+    //         }
+    //     })
+    // }
+
+    // console.log(urls);
+
+
+    // for (let index = 1; true; index++) {
+    //     let data = fetch(`https://jobs.github.com/positions.json?page=${index}`)
+    //     let exit = false;
+    //     let dataArray = []        
+
+    //     data.then((response) => {
+    //         // console.log(response);
+
+    //         return response.text();
+    //     }).then((body) => {
+    //         results = JSON.parse(body)
+    //         let array = [];
+    //         results.forEach(obj => {
+    //             array.push(obj);                
+    //         });
+            
+    //         dataArray = array;
+    //         console.log(dataArray);
+    //         // console.log(results) // logs to server
+    //     });
+    //     if (index === 9) {
+    //         exit = true
+    //     }        
+    //     if (exit) {
+            
+    //         final = dataArray
+    //         break
+    //     }
+        
+    // }  
+
+    // response.send(final) // sends to frontend
+
 });
 
 // app.listen(PORT, () => {

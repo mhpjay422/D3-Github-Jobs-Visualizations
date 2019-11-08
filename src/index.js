@@ -25,17 +25,24 @@ getData();
 async function getData() {
     const response = await fetch('/api');
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
+    let db = [];
+    let obj = {}
+
+    json.forEach(page => {        
+        db = db.concat(page)
+    })
     
-    json.forEach(post => {
+    db.forEach(post => {
         let date = post.created_at.split(" ");
         let formatedDate = `${date[1]}-${date[2]}-${date[5]}`
         
-        data[post.id] = formatedDate;
+        obj[post.id] = formatedDate;
     }) 
+    data = obj;    
 }
-
 console.log(data);
+
 
 
 // csv('data.csv').then(importData => {
