@@ -194,7 +194,7 @@ const render = data => {
         
     const xScale = scaleLinear()
         // .domain([0, 100])
-        .domain([-2.25, maxScale() + 10])
+        .domain([-1, maxScale() + 10])
         // .domain(data.map(yValue))
         .range([0, innerWidth])
         
@@ -253,7 +253,6 @@ const render = data => {
             .attr('fill', '#635F5D')
     }
     
-
     const xAxisG = g.append('g').call(xAxis)
         .attr('class', 'bottomtext')
         .attr('transform', `translate(0, ${innerHeight})`)
@@ -266,7 +265,7 @@ const render = data => {
         .attr('y', 60)
         .attr('x', innerWidth / 2)
         .attr('fill', '#635F5D')
-        .text('Number of posted jobs') 
+        .text('Number of posted open positions') 
 
 
     const barsG = g.append('g')
@@ -310,7 +309,13 @@ const render = data => {
             .attr('fill', d => colorScale(yValue(d)))
         .merge(bars.select('rect'))
                 .transition().duration(1500)
-                .attr('width', d => xScale(xValue(d)));
+                .attr('width', d => {                    
+                    if (d[1] === 0) {
+                       return 0 
+                    } else {
+                        return xScale(xValue(d))
+                    }
+                });
 
     const toggleBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
