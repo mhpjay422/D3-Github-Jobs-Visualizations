@@ -54,7 +54,22 @@ async function getData() {
     };
 
     let db = [];
-    let data = {}
+    let data = {
+        '2018-10': 0,
+        '2018-10': 0,
+        '2018-10': 0,
+        '2019-01': 0,
+        '2019-02': 0,
+        '2019-03': 0,
+        '2019-04': 0,
+        '2019-05': 0,
+        '2019-06': 0,
+        '2019-07': 0,
+        '2019-08': 0,
+        '2019-09': 0,
+        '2019-10': 0,
+        '2019-11': 0
+    }
 
     json.forEach(page => {        
         db = db.concat(page)
@@ -79,7 +94,7 @@ async function getData() {
     let finalData = []
     
     Object.keys(data).sort().forEach( key => {
-        console.log(key);
+        // console.log(key);
         
         finalData.push([`${months[key.slice(key.length - 2)]}  ${key.slice(2,4)}`, data[key]])
         // orderedData[key] = data[key];
@@ -130,7 +145,7 @@ const svg = select('svg')
 const zoomG = svg
     .attr('width', width)
     .attr('height', height)
-.append('g');
+    .append('g');
 
 
 const render = data => {
@@ -179,7 +194,7 @@ const render = data => {
         
     const xScale = scaleLinear()
         // .domain([0, 100])
-        .domain([-1, maxScale() + 10])
+        .domain([-2.25, maxScale() + 10])
         // .domain(data.map(yValue))
         .range([0, innerWidth])
         
@@ -251,7 +266,7 @@ const render = data => {
         .attr('y', 60)
         .attr('x', innerWidth / 2)
         .attr('fill', '#635F5D')
-        .text('POP') 
+        .text('Number of posted jobs') 
 
 
     const barsG = g.append('g')
@@ -264,7 +279,7 @@ const render = data => {
     barsEnter
         .attr('class', 'bars')
         .merge(bars)
-            .on('click', d => { toggleSelectedBar(d[0]); })
+            .on('click', d => { toggleSelectedBar(d[0]) })
             .on('mouseover', d => { 
                 toggleHighlight(d[0]);
                 tooltip.transition()
@@ -319,19 +334,18 @@ const render = data => {
         .attr('class', 'rectText')
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
-        .text(d => `${d[1]}`)
-        .attr('y', d => yScale(yValue(d)) + 45)
+        .text(d => d[1])
+        .attr('y', d => yScale(yValue(d)) + 20)
     .merge(bars.select('text'))
             .transition().duration(1500)
-            .attr('x', d => xScale(xValue(d)) - 11);
+            .attr('x', d => xScale(xValue(d)) - 12);
         
     g.append('text')
         .attr('class', 'title')
+        .attr('fill', 'black')
         .attr('x', width / 3) 
-        .attr('y', -10)
+        .attr('y', -20)
         .attr('text-anchor', 'middle')
-        .text('My Bar Charts')
-
-    
+        .text('Github Jobs Visualization')
 }
 
