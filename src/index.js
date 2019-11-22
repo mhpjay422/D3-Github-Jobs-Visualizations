@@ -2,6 +2,7 @@
 import { 
     select, 
     csv, 
+    scaleTime,
     scaleLinear, 
     scaleBand, 
     max, 
@@ -19,36 +20,84 @@ import {
 
 // console.log(jobs);
 
-let data = {};
-
 getData();
+
 async function getData() {
     const response = await fetch('/api');
     const json = await response.json();
-    // console.log(json);
+
+    let months = {
+        'Jan': "01",
+        'Feb': "02",
+        'Mar': "03",
+        'Apr': "04",
+        'May': "05",
+        'Jun': "06",
+        'Jul': "07",
+        'Aug': "08",
+        'Sep': "09",
+        'Oct': "10",
+        'Nov': "11",
+        'Dec': "12",
+        '01': "Jan",
+        '02': "Feb",
+        '03': "Mar",
+        '04': "Apr",
+        '05': "May",
+        '06': "Jun",
+        '07': "Jul",
+        '08': "Aug",
+        '09': "Sep",
+        '10': "Oct",
+        '11': "Nov",
+        '12': "Dec"
+    };
+
     let db = [];
-    let obj = {}
+    let data = {}
 
     json.forEach(page => {        
         db = db.concat(page)
-    })
+    })    
+
+    // console.log(json);
     
     db.forEach(post => {
         let date = post.created_at.split(" ");
-        let formatedDate = `${date[1]}-${date[2]}-${date[5]}`
+        let formatedDate = `${date[5]}-${months[date[1]]}`
+
+        console.log(formatedDate);
         
-        obj[post.id] = formatedDate;
+        
+        if (data[formatedDate]) {
+            data[formatedDate] = data[formatedDate] + 1
+        } else {
+            data[formatedDate] = 1
+        }
     }) 
-    data = obj;    
+
+    let finalData = []
+    
+    Object.keys(data).sort().forEach( key => {
+        console.log(key);
+        
+        finalData.push([`${months[key.slice(key.length - 2)]}  ${key.slice(2,4)}`, data[key]])
+        // orderedData[key] = data[key];
+    });
+
+
+    console.log(finalData);
+    
+    render(finalData)
 }
-console.log(data);
+
 
 
 
 // csv('data.csv').then(importData => {
 //     importData.forEach(d => {
 //         d.population = +d.population * 1000;
-//         d.id = d.country;
+//         d[0] = d.country;
 //     });
 //     data = importData;
 //     render(importData);
@@ -60,8 +109,10 @@ let tooltip = select("body").append("div")
 
 const width = document.body.clientWidth
 const height = document.body.clientHeight
-const xValue = d => d.population;
-const yValue = d => d.country;
+const xValue = d => d[1];
+const yValue = d => d[0];
+// const xValue = d => Object.keys(d);
+// const yValue = d => Object.values(d);
 const margin = {
     top: 60,
     right: 60,
@@ -83,6 +134,8 @@ const zoomG = svg
 
 
 const render = data => {
+
+    // console.log(data);
 
     const toggleSelectedBar = id => {
         selectedRect = id;
@@ -106,39 +159,63 @@ const render = data => {
             resetAxisText()
         }
         highlightBar(); 
-    }
+    }    
 
-    const xScale = scaleLinear()
-        .domain([0, max(data, xValue)])
-        .range([0, innerWidth]);
-        
     const yScale = scaleBand()
         .domain(data.map(yValue))
         .range([0, innerHeight])
         .padding(0.1);
 
-    const xAxisTickFormat = number =>
-        format('.3s')(number)
-        .replace('G', 'B')
-        .replace('M', 'M')
-        .replace('0.00', '0');
+    let maxScale = () => {
+        let max = null;
+        data.forEach( date => {
+            if (date[1] > max) {
+                max = date[1]
+            }
+        })
+
+        return max;
+    }
+        
+    const xScale = scaleLinear()
+        // .domain([0, 100])
+        .domain([-1, maxScale() + 10])
+        // .domain(data.map(yValue))
+        .range([0, innerWidth])
+        
+
+    // const yAxisTickFormat = date =>
+    //     date
+    //     .replace('2018-10', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
+    //     .replace('2019-01', 'Jan-2019')    
 
     const xAxis = axisBottom(xScale)
-        .tickFormat(xAxisTickFormat)
+        // .tickFormat(xAxisTickFormat)
         .tickSize(-innerHeight)
 
     const g = zoomG.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    svg.call(zoom().on('zoom', () => {
-        zoomG.attr('transform', event.transform)
-    }))
+    // svg.call(zoom().on('zoom', () => {
+    //     zoomG.attr('transform', event.transform)
+    // }))
 
     const leftAxis = g.append('g')
     leftAxis
         .call(axisLeft(yScale))
+        // .call(axisLeft(yScale).tickFormat(yAxisTickFormat))
         .selectAll('.domain, .tick line')
-            .remove();
+            .remove();        
 
     leftAxis.selectAll('text')
         .attr('fill', '#635F5D')
@@ -166,7 +243,8 @@ const render = data => {
         .attr('class', 'bottomtext')
         .attr('transform', `translate(0, ${innerHeight})`)
 
-    xAxisG.select('.domain').remove();
+    xAxisG.selectAll('.domain, .tick line')
+        .remove();
 
     xAxisG.append('text')
         .attr('class', 'axis-label')
@@ -179,16 +257,16 @@ const render = data => {
     const barsG = g.append('g')
 
     const bars = barsG.selectAll('g')
-        .data(data, d => d.id)
+        .data(data, d => d[0])
 
     const barsEnter = bars.enter().append('g')
 
     barsEnter
         .attr('class', 'bars')
         .merge(bars)
-            .on('click', d => { toggleSelectedBar(d.id); })
+            .on('click', d => { toggleSelectedBar(d[0]); })
             .on('mouseover', d => { 
-                toggleHighlight(d.id);
+                toggleHighlight(d[0]);
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9)
@@ -222,7 +300,7 @@ const render = data => {
     const toggleBar = () => barsEnter.select('rect')
         .attr('stroke-width', 5)
         .attr('stroke', d => 
-        d.id === selectedRect && shouldToggle
+        d[0] === selectedRect && shouldToggle
             ? 'black' 
             : 'none'
         )
@@ -231,7 +309,7 @@ const render = data => {
 
         barsEnter.select('rect')
             .attr('opacity', d =>
-                d.id === hoverRect || hoverRect === null 
+                d[0] === hoverRect || hoverRect === null 
                 ? 1 
                 : .4
             )
@@ -241,11 +319,11 @@ const render = data => {
         .attr('class', 'rectText')
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
-        .text(d => xAxisTickFormat(xValue(d)))
-        .attr('y', d => yScale(yValue(d)) + 50)
+        .text(d => `${d[1]}`)
+        .attr('y', d => yScale(yValue(d)) + 45)
     .merge(bars.select('text'))
             .transition().duration(1500)
-            .attr('x', d => xScale(xValue(d)) - 25);
+            .attr('x', d => xScale(xValue(d)) - 11);
         
     g.append('text')
         .attr('class', 'title')
@@ -253,5 +331,7 @@ const render = data => {
         .attr('y', -10)
         .attr('text-anchor', 'middle')
         .text('My Bar Charts')
+
+    
 }
 
