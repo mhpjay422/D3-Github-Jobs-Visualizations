@@ -285,8 +285,12 @@ const render = data => {
                     .duration(200)
                     .style("opacity", .9)
                 tooltip.html("hello")
-                    .style("left", "10px")
-                    .style("top", "10px");
+                    // .style("top", select(this).attr('y') + "px")
+                    // .style("left", select(this).attr('x') + "px")
+                    .style("top", (event.pageY) + "px")
+                    .style("left", (event.pageX) + "px")
+                    // .style("left", "10px")
+                    // .style("top", "10px");
                     // .style("top", (d3.event.pageY - 28) + "px");
             })
             .on('mouseout', () => { 
