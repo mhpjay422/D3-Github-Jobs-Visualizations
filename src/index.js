@@ -55,20 +55,96 @@ async function getData() {
 
     let db = [];
     let data = {
-        '2018-10': 0,
-        '2018-10': 0,
-        '2018-10': 0,
-        '2019-01': 0,
-        '2019-02': 0,
-        '2019-03': 0,
-        '2019-04': 0,
-        '2019-05': 0,
-        '2019-06': 0,
-        '2019-07': 0,
-        '2019-08': 0,
-        '2019-09': 0,
-        '2019-10': 0,
-        '2019-11': 0
+        '2018-08': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2018-09': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2018-10': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-01': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-02': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-03': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-04': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-05': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-06': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-07': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-08': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-09': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-10': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        '2019-11': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0
+        },
+        // '2019-12': {
+        //     'count': 0,
+        //     'Full Time': 0,
+        //     'Part Time': 0,
+        //     'Contract': 0
+        // },
     }
 
     json.forEach(page => {        
@@ -76,20 +152,37 @@ async function getData() {
     })    
 
     // console.log(json);
+    // console.log(data['2019-11'].Contract);
     
     db.forEach(post => {
         let date = post.created_at.split(" ");
         let formatedDate = `${date[5]}-${months[date[1]]}`
+        let type = post.type
 
-        console.log(formatedDate);
+        // console.log(post);
+        
+
+        // console.log(formatedDate);
         
         
         if (data[formatedDate]) {
-            data[formatedDate] = data[formatedDate] + 1
+            data[formatedDate].count = data[formatedDate].count + 1
+            data[formatedDate][type] = data[formatedDate][type] + 1
         } else {
-            data[formatedDate] = 1
+            // console.log(formatedDate);
+            data[formatedDate] = {
+                'count': 0,
+                'Full Time': 0,
+                'Part Time': 0,
+                'Contract': 0
+            }
+            data[formatedDate].count = 1
+            data[formatedDate][type] = 1
         }
     }) 
+
+    console.log(data);
+    
 
     let finalData = []
     
@@ -122,9 +215,13 @@ let tooltip = select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+let tooltipClick = select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
 const width = document.body.clientWidth
 const height = document.body.clientHeight
-const xValue = d => d[1];
+const xValue = d => d[1].count;
 const yValue = d => d[0];
 // const xValue = d => Object.keys(d);
 // const yValue = d => Object.values(d);
@@ -184,8 +281,10 @@ const render = data => {
     let maxScale = () => {
         let max = null;
         data.forEach( date => {
-            if (date[1] > max) {
-                max = date[1]
+            // console.log(date[1].count);
+            
+            if (date[1].count > max) {
+                max = date[1].count
             }
         })
 
@@ -278,13 +377,20 @@ const render = data => {
     barsEnter
         .attr('class', 'bars')
         .merge(bars)
-            .on('click', d => { toggleSelectedBar(d[0]) })
+            .on('click', d => { 
+                console.log(d[1]);
+                
+                toggleSelectedBar(d[0]) })
             .on('mouseover', d => { 
                 toggleHighlight(d[0]);
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9)
-                tooltip.html("hello")
+                tooltip.html(
+                            `Count: ${d[1]['count']}` + "<br/>" + "<br/>" + 
+                            `Full Time: ${d[1]['Full Time']}` + "<br/>" +  
+                            `Part Time: ${d[1]['Part Time']}` + "<br/>" + 
+                            `Contract: ${d[1]['Contract']}`)
                     // .style("top", select(this).attr('y') + "px")
                     // .style("left", select(this).attr('x') + "px")
                     .style("top", (event.pageY) + "px")
@@ -314,7 +420,7 @@ const render = data => {
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => {                    
-                    if (d[1] === 0) {
+                    if (d[1].count === 0) {
                        return 0 
                     } else {
                         return xScale(xValue(d))
@@ -343,7 +449,7 @@ const render = data => {
         .attr('class', 'rectText')
         .attr('fill', 'white')
         .attr('text-anchor', 'middle')
-        .text(d => d[1])
+        .text(d => d[1].count)
         .attr('y', d => yScale(yValue(d)) + 20)
     .merge(bars.select('text'))
             .transition().duration(1500)
