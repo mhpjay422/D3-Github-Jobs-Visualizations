@@ -55,18 +55,6 @@ async function getData() {
 
     let db = [];
     let data = {
-        '2018-08': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0
-        },
-        '2018-09': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0
-        },
         '2018-10': {
             'count': 0,
             'Full Time': 0,
@@ -211,14 +199,6 @@ async function getData() {
 //     render(importData);
 // })
 
-let tooltip = select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
-let tooltipClick = select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
 const width = document.body.clientWidth
 const height = document.body.clientHeight
 const xValue = d => d[1].count;
@@ -233,6 +213,7 @@ const margin = {
 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
+
 let selectedRect = null;
 let willHighlight = null;
 let shouldToggle = false;
@@ -249,18 +230,18 @@ const render = data => {
 
     // console.log(data);
 
-    const toggleSelectedBar = id => {
-        selectedRect = id;
+    // const toggleSelectedBar = id => {
+    //     selectedRect = id;
         
-        if (selectedRect === willHighlight) {
-            shouldToggle = false;
-            willHighlight = null;
-        } else {
-            shouldToggle = true;
-            willHighlight = id;
-        }
-        toggleBar();
-    }
+    //     if (selectedRect === willHighlight) {
+    //         shouldToggle = false;
+    //         willHighlight = null;
+    //     } else {
+    //         shouldToggle = true;
+    //         willHighlight = id;
+    //     }
+    //     // toggleBar();
+    // }
 
     const toggleHighlight = id => {
         if(id) {
@@ -374,13 +355,33 @@ const render = data => {
 
     const barsEnter = bars.enter().append('g')
 
+    let tooltip = select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    let tooltipClick = select("body").append("div")
+        .attr("class", "tooltipClick")
+        .style("opacity", 0)
+        .style("top", margin.top + "px")
+        .style("left", margin.left + "px")
+        .style("height", 0)
+        .style("width", 0)
+        .on('click', () => {            
+            tooltipClick
+                .style("opacity", 0)
+                .style("height", 0)
+                .style("width", 0)
+        })
+
     barsEnter
         .attr('class', 'bars')
         .merge(bars)
-            .on('click', d => { 
-                console.log(d[1]);
-                
-                toggleSelectedBar(d[0]) })
+            .on('click', () => { 
+                tooltipClick
+                    .style("opacity", 1)
+                    .style("height", innerHeight - innerHeight / 28 + "px")
+                    .style("width", innerWidth + "px")
+            })
             .on('mouseover', d => { 
                 toggleHighlight(d[0]);
                 tooltip.transition()
@@ -427,13 +428,13 @@ const render = data => {
                     }
                 });
 
-    const toggleBar = () => barsEnter.select('rect')
-        .attr('stroke-width', 5)
-        .attr('stroke', d => 
-        d[0] === selectedRect && shouldToggle
-            ? 'black' 
-            : 'none'
-        )
+    // const toggleBar = () => barsEnter.select('rect')
+    //     .attr('stroke-width', 5)
+    //     .attr('stroke', d => 
+    //     d[0] === selectedRect && shouldToggle
+    //         ? 'black' 
+    //         : 'none'
+    //     )
 
     const highlightBar = () => {
 
