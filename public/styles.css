@@ -23,6 +23,7 @@ text {
 
 .rectText {
     font-size: .8em;
+    pointer-events: none;
 }
 
 .bottomtext {
@@ -63,8 +64,8 @@ text {
     position: absolute;
     text-align: left;
     padding: .5em;
-    margin: .5em;
-    font: .8em sans-serif;
+    /* margin: .5em; */
+    font: 1.5em sans-serif;
     background: lightsteelblue;
     border: 0px;
     border-radius: 8px;

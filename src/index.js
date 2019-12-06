@@ -15,6 +15,7 @@ import {
     schemeCategory10,
     ease
 } from 'd3';
+import { stringify } from 'querystring';
 
 // let jobs = require('../server.js')
 
@@ -59,25 +60,29 @@ async function getData() {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0,
+            'company': {}
         },
         '2019-01': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-02': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-03': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-04': {
             'count': 0,
@@ -95,43 +100,50 @@ async function getData() {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-07': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-08': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-09': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-10': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         '2019-11': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0, 
+            'company': {}
         },
         // '2019-12': {
         //     'count': 0,
         //     'Full Time': 0,
         //     'Part Time': 0,
-        //     'Contract': 0
+        //     'Contract': 0, 
+        //     'company': {}
         // },
     }
 
@@ -139,13 +151,14 @@ async function getData() {
         db = db.concat(page)
     })    
 
-    // console.log(json);
+    console.log(json);
     // console.log(data['2019-11'].Contract);
     
     db.forEach(post => {
         let date = post.created_at.split(" ");
-        let formatedDate = `${date[5]}-${months[date[1]]}`
-        let type = post.type
+        let formatedDate = `${date[5]}-${months[date[1]]}`;
+        let type = post.type;
+        let company = post.company;
 
         // console.log(post);
         
@@ -156,16 +169,24 @@ async function getData() {
         if (data[formatedDate]) {
             data[formatedDate].count = data[formatedDate].count + 1
             data[formatedDate][type] = data[formatedDate][type] + 1
+            if (data[formatedDate]['company'][company]) {
+                data[formatedDate]['company'][company] = data[formatedDate]['company'][company] + 1
+            } else {
+                data[formatedDate]['company'][company] = 1
+            }
+            
         } else {
             // console.log(formatedDate);
             data[formatedDate] = {
                 'count': 0,
                 'Full Time': 0,
                 'Part Time': 0,
-                'Contract': 0
+                'Contract': 0,
+                'company': {}
             }
             data[formatedDate].count = 1
             data[formatedDate][type] = 1
+            data[formatedDate]['company'][company] = 1
         }
     }) 
 
@@ -357,36 +378,53 @@ const render = data => {
 
     let tooltip = select("body").append("div")
         .attr("class", "tooltip")
-        .style("opacity", 0);
+        .style("visibility", "hidden");
 
     let tooltipClick = select("body").append("div")
         .attr("class", "tooltipClick")
-        .style("opacity", 0)
+        .style("visibility", "hidden")
         .style("top", margin.top + "px")
         .style("left", margin.left + "px")
         .style("height", 0)
         .style("width", 0)
         .on('click', () => {            
             tooltipClick
-                .style("opacity", 0)
+                .style("visibility", "hidden")
                 .style("height", 0)
                 .style("width", 0)
+                .style("cursor", "none")
         })
+
+    const stringify = d => {
+
+        let reformat = JSON.stringify(d[1]['company'])
+            .replace("{", "")
+            .replace("}", "")
+            .split('"').join("")
+            .replace(", Inc", " Inc")
+            .split(',').join("*******")
+
+        return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + reformat
+    } 
 
     barsEnter
         .attr('class', 'bars')
         .merge(bars)
-            .on('click', () => { 
+            .on('click', d => { 
+                console.log(d);
+                
                 tooltipClick
-                    .style("opacity", 1)
+                    .style("visibility", "visible")
                     .style("height", innerHeight - innerHeight / 28 + "px")
                     .style("width", innerWidth + "px")
+                    .style("cursor", "pointer")
+                    .html(stringify(d))
             })
             .on('mouseover', d => { 
                 toggleHighlight(d[0]);
                 tooltip.transition()
                     .duration(200)
-                    .style("opacity", 1)
+                    .style("visibility", "visible")
                 tooltip.html(
                             `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
                             `Full Time: ${d[1]['Full Time']}` + "<br/>" +  
@@ -404,7 +442,7 @@ const render = data => {
                 toggleHighlight(null);
                 tooltip.transition()
                     .duration(500)
-                    .style("opacity", 0);
+                    .style("visibility", "hidden");
             })
     bars.exit().remove();
 
@@ -439,7 +477,7 @@ const render = data => {
     const highlightBar = () => {
 
         barsEnter.select('rect')
-            .attr('opacity', d =>
+            .attr('visibility', d =>
                 d[0] === hoverRect || hoverRect === null 
                 ? 1 
                 : .4
