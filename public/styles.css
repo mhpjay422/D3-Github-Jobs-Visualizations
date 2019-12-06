@@ -49,10 +49,10 @@ text {
     position: absolute;
     text-align: left;
     width: 10em;
-    height: 10em;
-    padding: 10px;
-    margin: 10px;
-    font: 12px sans-serif;
+    height: 6em;
+    padding: .5em;
+    margin: .5em;
+    font: .8em sans-serif;
     background: lightsteelblue;
     border: 0px;
     border-radius: 8px;

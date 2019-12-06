@@ -385,9 +385,9 @@ const render = data => {
                 toggleHighlight(d[0]);
                 tooltip.transition()
                     .duration(200)
-                    .style("opacity", .9)
+                    .style("opacity", 1)
                 tooltip.html(
-                            `Count: ${d[1]['count']}` + "<br/>" + "<br/>" + 
+                            `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
                             `Full Time: ${d[1]['Full Time']}` + "<br/>" +  
                             `Part Time: ${d[1]['Part Time']}` + "<br/>" + 
                             `Contract: ${d[1]['Contract']}`)
