@@ -1,6 +1,6 @@
 # D3-Github-Jobs-Visualizations
 
-**Architecture and Technologies**
+###Architecture and Technologies**
 
 D3-Github-Jobs-Visualizations was built using:
 
