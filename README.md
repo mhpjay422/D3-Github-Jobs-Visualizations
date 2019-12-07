@@ -6,6 +6,8 @@ D3-Github-Jobs-Visualizations was built using:
 
 * D3 v5.12.0
 
+* Node v.10.15.1
+
 * Express-Node.js v4.17.1
 
 * Node-fetch v2.6.0
