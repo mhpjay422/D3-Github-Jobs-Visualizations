@@ -20,6 +20,6 @@ D3-Github-Jobs-Visualizations is a visualization that displays information about
 
 gif placeholder
 
-*** Node server:
+### Node server:
 
 By implementing a simple node server, an api call is made to the githubjobs website.  As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues.  
