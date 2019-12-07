@@ -4,13 +4,15 @@
 
 D3-Github-Jobs-Visualizations was built using:
 
-* D3 5.12.0
+* D3 v5.12.0
 
-* Node v10.15.1
+* Express-Node.js v4.17.1
 
-* Javascript 9
+* Node-fetch v2.6.0
 
-* webpack 4.41.0
+* Javascript v9
+
+* webpack v4.41.0
 
 ### Background and Overview
 
@@ -22,4 +24,7 @@ gif placeholder
 
 ### Node server:
 
-By implementing a simple node server, an api call is made to the githubjobs website.  As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues.  
+By implementing a simple node server, an api call is made to the githubjobs website. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
+
+
+
