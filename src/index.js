@@ -404,7 +404,7 @@ const render = data => {
             .replace(", Inc", " Inc")
             .split(',').join("*******")
 
-        return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + reformat
+        return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + "<br/>" + reformat
     } 
 
     barsEnter
