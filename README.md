@@ -24,7 +24,37 @@ gif placeholder
 
 ### Node server:
 
-By implementing a simple node server, an api call is made to the githubjobs website. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
+By implementing a simple node server, an api call is made to the githubjobs website to access all data for the open job positions. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
 
+To make the api call, "node-fetch" is used on a list of page urls and consolidated using Promise.all.
 
+```
+app.get('/api', (request, response) => {
+
+    fetchData = () => {
+        const urls = [
+            "https://jobs.github.com/positions.json?page=1",
+            "https://jobs.github.com/positions.json?page=2",
+            "https://jobs.github.com/positions.json?page=3",
+            "https://jobs.github.com/positions.json?page=4",
+            "https://jobs.github.com/positions.json?page=5",
+            "https://jobs.github.com/positions.json?page=6",
+            "https://jobs.github.com/positions.json?page=7",
+            "https://jobs.github.com/positions.json?page=8",
+            "https://jobs.github.com/positions.json?page=9",
+            "https://jobs.github.com/positions.json?page=10"
+        ];
+
+        const allRequests = urls.map(url =>
+            fetch(url).then(response => response.json())
+        );
+
+        return Promise.all(allRequests);
+    };
+
+    fetchData().then(arrayOfResponses =>
+        response.send(arrayOfResponses)
+    );
+});
+```
 
