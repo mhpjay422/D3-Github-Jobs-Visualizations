@@ -29,9 +29,19 @@ By implementing a simple node server, an api call is made to the githubjobs webs
 To make the api call, "node-fetch" is used on a list of page urls and consolidated using Promise.all.
 
 ```
+const express = require('express')
+const app = express()
+const path = require('path')
+const fetch = require('node-fetch')
+
+app.listen(3000, () => console.log("3000"))
+
+app.use(express.static(path.join(__dirname, "public")))
+
 app.get('/api', (request, response) => {
 
     fetchData = () => {
+
         const urls = [
             "https://jobs.github.com/positions.json?page=1",
             "https://jobs.github.com/positions.json?page=2",
