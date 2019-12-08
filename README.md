@@ -28,7 +28,7 @@ gif placeholder
 
 The purpose of using this visualization is to best and effectively communicate the data to the end user.  Versus text and other means of communicating data, visually has been proved to be the best communicator.  The human brain is best at digesting and absorbing information that has been visually conveyed to them.  Visually communticating data has become an art with an assortment of different types of charts and graphs to use as tools to relay information.  I have selected a bar chart because amongst all the different options in selecting a visual tool, the bar chart has generally demonstrated itself to be the most effective. 
 
-### Node server:
+### Node server
 
 By implementing a simple node server, an api call is made to the githubjobs website to access all data for the open job positions. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
 
@@ -149,6 +149,6 @@ barsEnter.append('text')
 .merge(bars.select('text'))
         .transition().duration(1500)
         .attr('x', d => xScale(xValue(d)) - 12);
- ```
+ ``` 
  
  
