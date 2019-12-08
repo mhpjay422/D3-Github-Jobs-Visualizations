@@ -123,66 +123,66 @@ leftAxis.selectAll('text')
  ```
  const barsG = g.append('g')
 
-    const bars = barsG.selectAll('g')
-        .data(data, d => d[0])
+const bars = barsG.selectAll('g')
+    .data(data, d => d[0])
 
-    const barsEnter = bars.enter().append('g')
-    
-    barsEnter.append('rect')
-        .attr('class', 'rect')
-            .attr('y', d => yScale(yValue(d)))
-            .attr('height', yScale.bandwidth())
-        .merge(bars.select('rect'))
-                .transition().duration(1500)
-                .attr('width', d => {                    
-                    if (d[1].count === 0) {
-                       return 0 
-                    } else {
-                        return xScale(xValue(d))
-                    }
-                });
-    
-    barsEnter.append('text')
-        .attr('class', 'rectText')
-        .attr('fill', 'white')
-        .attr('text-anchor', 'middle')
-        .text(d => d[1].count)
-        .attr('y', d => yScale(yValue(d)) + 20)
-    .merge(bars.select('text'))
+const barsEnter = bars.enter().append('g')
+
+barsEnter.append('rect')
+    .attr('class', 'rect')
+        .attr('y', d => yScale(yValue(d)))
+        .attr('height', yScale.bandwidth())
+    .merge(bars.select('rect'))
             .transition().duration(1500)
-            .attr('x', d => xScale(xValue(d)) - 12);
+            .attr('width', d => {                    
+                if (d[1].count === 0) {
+                    return 0 
+                } else {
+                    return xScale(xValue(d))
+                }
+            });
 
-    barsEnter
-        .attr('class', 'bars')
-        .merge(bars)
-        .on('click', d => {
-            tooltipClick
-                .style("visibility", "visible")
-                .style("height", innerHeight - innerHeight / 28 + "px")
-                .style("width", innerWidth + "px")
-                .style("cursor", "pointer")
-                .html(stringify(d))
-        })
-        .on('mouseover', d => {
-            toggleHighlight(d[0]);
-            tooltip.transition()
-                .duration(200)
-                .style("visibility", "visible")
-            tooltip.html(
-                    `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
-                    `Full Time: ${d[1]['Full Time']}` + "<br/>" +
-                    `Part Time: ${d[1]['Part Time']}` + "<br/>" +
-                    `Contract: ${d[1]['Contract']}`)
-                .style("top", (event.pageY) + "px")
-                .style("left", (event.pageX) + "px")
-        })
-        .on('mouseout', () => {
-            toggleHighlight(null);
-            tooltip.transition()
-                .duration(500)
-                .style("visibility", "hidden");
-        })
-    bars.exit().remove();
+barsEnter.append('text')
+    .attr('class', 'rectText')
+    .attr('fill', 'white')
+    .attr('text-anchor', 'middle')
+    .text(d => d[1].count)
+    .attr('y', d => yScale(yValue(d)) + 20)
+.merge(bars.select('text'))
+        .transition().duration(1500)
+        .attr('x', d => xScale(xValue(d)) - 12);
+
+barsEnter
+    .attr('class', 'bars')
+    .merge(bars)
+    .on('click', d => {
+        tooltipClick
+            .style("visibility", "visible")
+            .style("height", innerHeight - innerHeight / 28 + "px")
+            .style("width", innerWidth + "px")
+            .style("cursor", "pointer")
+            .html(stringify(d))
+    })
+    .on('mouseover', d => {
+        toggleHighlight(d[0]);
+        tooltip.transition()
+            .duration(200)
+            .style("visibility", "visible")
+        tooltip.html(
+                `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
+                `Full Time: ${d[1]['Full Time']}` + "<br/>" +
+                `Part Time: ${d[1]['Part Time']}` + "<br/>" +
+                `Contract: ${d[1]['Contract']}`)
+            .style("top", (event.pageY) + "px")
+            .style("left", (event.pageX) + "px")
+    })
+    .on('mouseout', () => {
+        toggleHighlight(null);
+        tooltip.transition()
+            .duration(500)
+            .style("visibility", "hidden");
+    })
+bars.exit().remove();
  ```
  
  
