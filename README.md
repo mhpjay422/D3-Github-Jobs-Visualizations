@@ -115,3 +115,74 @@ leftAxis.selectAll('text')
     .attr('fill', '#635F5D')
     .attr('font-size', '2.7em')
 ```
+
+### Animated Transitions
+
+ To achieve animated transitions using D3, nesting grouping is required along with executing the transitions within the merge step of the general update pattern.  This is used to transition your objects size or position by continually adding and remove a new/different object on-screen. This effect continues until the desired result is achieved resulting in an effect that is viewed as an object that is moving. 
+ 
+ ```
+ const barsG = g.append('g')
+
+    const bars = barsG.selectAll('g')
+        .data(data, d => d[0])
+
+    const barsEnter = bars.enter().append('g')
+    
+    barsEnter.append('rect')
+        .attr('class', 'rect')
+            .attr('y', d => yScale(yValue(d)))
+            .attr('height', yScale.bandwidth())
+        .merge(bars.select('rect'))
+                .transition().duration(1500)
+                .attr('width', d => {                    
+                    if (d[1].count === 0) {
+                       return 0 
+                    } else {
+                        return xScale(xValue(d))
+                    }
+                });
+    
+    barsEnter.append('text')
+        .attr('class', 'rectText')
+        .attr('fill', 'white')
+        .attr('text-anchor', 'middle')
+        .text(d => d[1].count)
+        .attr('y', d => yScale(yValue(d)) + 20)
+    .merge(bars.select('text'))
+            .transition().duration(1500)
+            .attr('x', d => xScale(xValue(d)) - 12);
+
+    barsEnter
+        .attr('class', 'bars')
+        .merge(bars)
+        .on('click', d => {
+            tooltipClick
+                .style("visibility", "visible")
+                .style("height", innerHeight - innerHeight / 28 + "px")
+                .style("width", innerWidth + "px")
+                .style("cursor", "pointer")
+                .html(stringify(d))
+        })
+        .on('mouseover', d => {
+            toggleHighlight(d[0]);
+            tooltip.transition()
+                .duration(200)
+                .style("visibility", "visible")
+            tooltip.html(
+                    `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
+                    `Full Time: ${d[1]['Full Time']}` + "<br/>" +
+                    `Part Time: ${d[1]['Part Time']}` + "<br/>" +
+                    `Contract: ${d[1]['Contract']}`)
+                .style("top", (event.pageY) + "px")
+                .style("left", (event.pageX) + "px")
+        })
+        .on('mouseout', () => {
+            toggleHighlight(null);
+            tooltip.transition()
+                .duration(500)
+                .style("visibility", "hidden");
+        })
+    bars.exit().remove();
+ ```
+ 
+ 
