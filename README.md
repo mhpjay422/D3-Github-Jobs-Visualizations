@@ -1,6 +1,6 @@
 # D3-Github-Jobs-Visualizations
 
-### Architecture and Technologies
+## Architecture and Technologies
 
 D3-Github-Jobs-Visualizations was built using:
 
@@ -17,7 +17,7 @@ D3-Github-Jobs-Visualizations was built using:
 * webpack v4.41.0
 
 
-### Background and Overview
+## Background and Overview
 
 D3-Github-Jobs-Visualizations is a visualization that displays information about open positions on the Github Jobs website using a barchart. It was a Javascript project for the App Academy software engineering bootcamp.
 
@@ -26,12 +26,12 @@ D3-Github-Jobs-Visualizations is a visualization that displays information about
 gif placeholder
 
 
-### Visualization
+## Visualization
 
 The purpose of using this visualization is to best and effectively communicate the data to the end user.  Versus text and other means of communicating data, visually has been proved to be the best communicator.  The human brain is best at digesting and absorbing information that has been visually conveyed to them.  Visually communticating data has become an art with an assortment of different types of charts and graphs to use as tools to relay information.  I have selected a bar chart because amongst all the different options in selecting a visual tool, the bar chart has generally demonstrated itself to be the most effective. 
 
 
-### Node server
+## Node server
 
 By implementing a simple node server, an api call is made as part of a GET request to the githubjobs website to access all data for the open job positions. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
 
@@ -78,7 +78,7 @@ app.get('/api', (request, response) => {
 ```
 
 
-### D3 Tools
+## D3 Tools
 
 The data is displayed using a number of D3 tools to create the visual representation of the data.  From creating the axes using "axisLeft" and "axisBottom" to assigning the numerical domain and range on those axes using "scaleLinear" and "scaleBand". The "append" tool, is the crux of the D3 library.  It allows you to create an element (in the programming sense) or a construct in which you are able to style or shape into the design of choice.  
 
@@ -121,7 +121,7 @@ leftAxis.selectAll('text')
 ```
 
 
-### Animated Transitions
+## Animated Transitions
 
  To achieve animated transitions using D3, nesting grouping is required along with executing the transitions within the merge step of the general update pattern.  This is used to transition your objects size or position by continually adding and remove a new/different object on-screen. This effect continues until the desired result is achieved resulting in an effect that is viewed as an object that is moving. 
  
