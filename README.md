@@ -16,6 +16,7 @@ D3-Github-Jobs-Visualizations was built using:
 
 * webpack v4.41.0
 
+
 ### Background and Overview
 
 D3-Github-Jobs-Visualizations is a visualization that displays information about open positions on the Github Jobs website using a barchart. It was a Javascript project for the App Academy software engineering bootcamp.
@@ -24,15 +25,17 @@ D3-Github-Jobs-Visualizations is a visualization that displays information about
 
 gif placeholder
 
+
 ### Visualization
 
 The purpose of using this visualization is to best and effectively communicate the data to the end user.  Versus text and other means of communicating data, visually has been proved to be the best communicator.  The human brain is best at digesting and absorbing information that has been visually conveyed to them.  Visually communticating data has become an art with an assortment of different types of charts and graphs to use as tools to relay information.  I have selected a bar chart because amongst all the different options in selecting a visual tool, the bar chart has generally demonstrated itself to be the most effective. 
 
+
 ### Node server
 
-By implementing a simple node server, an api call is made to the githubjobs website to access all data for the open job positions. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
+By implementing a simple node server, an api call is made as part of a GET request to the githubjobs website to access all data for the open job positions. As an added benefit of creating the server to make the api call, I am able to avoid CORS (Cross-Origin Resource Sharing) issues. 
 
-To make the api call, "node-fetch" is used on a list of page urls and consolidated using Promise.all.
+To make the api call, "node-fetch" is used on a list of page urls and the responses are consolidated using Promise.all. The consolidated data is then sent back as the response of the GET request.
 
 ```
 const express = require('express')
@@ -73,6 +76,7 @@ app.get('/api', (request, response) => {
     );
 });
 ```
+
 
 ### D3 Tools
 
@@ -115,6 +119,7 @@ leftAxis.selectAll('text')
     .attr('fill', '#635F5D')
     .attr('font-size', '2.7em')
 ```
+
 
 ### Animated Transitions
 
