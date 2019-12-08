@@ -72,7 +72,7 @@ app.get('/api', (request, response) => {
 
 ### Visualization
 
-When the visualization is viewed, the data is displayed using a number of D3 tools. The purpose of using this visualization is to best and effectively communicate data to the end user.  Versus text and other means of communicating data, visually has been proved to be the best communicator.  The human brain is best at digesting and absorbing information that has been visually conveyed to them.  Visually communticating data has become an art with an assortment of different types of charts and graphs to use as tools to relay information.  I have selected a bar chart because amongst all the different options in selecting a visual tool, the bar chart has generally demonstrated itself to be the best. 
+When the visualization is viewed, the data is displayed using a number of D3 tools. The purpose of using this visualization is to best and effectively communicate data to the end user.  Versus text and other means of communicating data, visually has been proved to be the best communicator.  The human brain is best at digesting and absorbing information that has been visually conveyed to them.  Visually communticating data has become an art with an assortment of different types of charts and graphs to use as tools to relay information.  I have selected a bar chart because amongst all the different options in selecting a visual tool, the bar chart has generally demonstrated itself to be the most effective. 
 
 
 
