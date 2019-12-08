@@ -17,6 +17,7 @@ D3-Github-Jobs-Visualizations was built using:
 * webpack v4.41.0
 &nbsp;
 &nbsp;
+&nbsp;
 ## Background and Overview
 
 D3-Github-Jobs-Visualizations is a visualization that displays information about open positions on the Github Jobs website using a barchart. It was a Javascript project for the App Academy software engineering bootcamp.
@@ -24,6 +25,7 @@ D3-Github-Jobs-Visualizations is a visualization that displays information about
 [Live Site] (http://www.d3githubjobsvisualization.com/)
 
 gif placeholder
+&nbsp;
 &nbsp;
 &nbsp;
 ### Visualization
