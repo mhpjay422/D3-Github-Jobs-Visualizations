@@ -135,11 +135,9 @@ barsEnter.append('rect')
     .merge(bars.select('rect'))
             .transition().duration(1500)
             .attr('width', d => {                    
-                if (d[1].count === 0) {
-                    return 0 
-                } else {
-                    return xScale(xValue(d))
-                }
+                (d[1].count === 0) 
+                    ? 0 
+                    : xScale(xValue(d))
             });
 
 barsEnter.append('text')
@@ -151,38 +149,6 @@ barsEnter.append('text')
 .merge(bars.select('text'))
         .transition().duration(1500)
         .attr('x', d => xScale(xValue(d)) - 12);
-
-barsEnter
-    .attr('class', 'bars')
-    .merge(bars)
-    .on('click', d => {
-        tooltipClick
-            .style("visibility", "visible")
-            .style("height", innerHeight - innerHeight / 28 + "px")
-            .style("width", innerWidth + "px")
-            .style("cursor", "pointer")
-            .html(stringify(d))
-    })
-    .on('mouseover', d => {
-        toggleHighlight(d[0]);
-        tooltip.transition()
-            .duration(200)
-            .style("visibility", "visible")
-        tooltip.html(
-                `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
-                `Full Time: ${d[1]['Full Time']}` + "<br/>" +
-                `Part Time: ${d[1]['Part Time']}` + "<br/>" +
-                `Contract: ${d[1]['Contract']}`)
-            .style("top", (event.pageY) + "px")
-            .style("left", (event.pageX) + "px")
-    })
-    .on('mouseout', () => {
-        toggleHighlight(null);
-        tooltip.transition()
-            .duration(500)
-            .style("visibility", "hidden");
-    })
-bars.exit().remove();
  ```
  
  
