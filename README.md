@@ -79,69 +79,39 @@ app.get('/api', (request, response) => {
 The data is displayed using a number of D3 tools to create the visual representation of the data.  From creating the axes using "axisLeft" and "axisBottom" to assigning the numerical domain and range on those axes using "scaleLinear" and "scaleBand". The "append" tool, is the crux of the D3 library.  It allows you to create an element (in the programming sense) or a construct in which you are able to style or shape into the design of choice.  
 
 ```
-import { 
-    select, 
-    scaleLinear, 
-    scaleBand, 
-    axisLeft, 
-    axisBottom,  
-    event
-} from 'd3';
+const yScale = scaleBand()
+    .domain(data.map(yValue))
+    .range([0, innerHeight])
+    .padding(0.1);
 
-const width = document.body.clientWidth
-const height = document.body.clientHeight
-const xValue = d => d[1].count;
-const yValue = d => d[0];
-const margin = {
-    top: 60,
-    right: 60,
-    bottom: 100,
-    left: 220
-};
-const innerWidth = width - margin.left - margin.right;
-const innerHeight = height - margin.top - margin.bottom;
-
-const svg = select('svg')
-const zoomG = svg
-    .attr('width', width)
-    .attr('height', height)
-    .append('g');
-    
- const render = data => { 
-
-    const yScale = scaleBand()
-        .domain(data.map(yValue))
-        .range([0, innerHeight])
-        .padding(0.1);
-
-    const maxScale = () => {
-        let max = null;
-        data.forEach( date => {
-            
-            if (date[1].count > max) {
-                max = date[1].count
-            }
-        })
-        return max;
-    }
+const maxScale = () => {
+    let max = null;
+    data.forEach( date => {
         
-    const xScale = scaleLinear()
-        .domain([-1, maxScale() + 10])
-        .range([0, innerWidth])  
+        if (date[1].count > max) {
+            max = date[1].count
+        }
+    })
+    return max;
+}
+    
+const xScale = scaleLinear()
+    .domain([-1, maxScale() + 10])
+    .range([0, innerWidth])  
 
-    const xAxis = axisBottom(xScale)
-        .tickSize(-innerHeight)
+const xAxis = axisBottom(xScale)
+    .tickSize(-innerHeight)
 
-    const g = zoomG.append('g')
-        .attr('transform', `translate(${margin.left}, ${margin.top})`);
+const g = zoomG.append('g')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const leftAxis = g.append('g')
-    leftAxis
-        .call(axisLeft(yScale))
-        .selectAll('.domain, .tick line')
-            .remove();        
+const leftAxis = g.append('g')
+leftAxis
+    .call(axisLeft(yScale))
+    .selectAll('.domain, .tick line')
+        .remove();        
 
-    leftAxis.selectAll('text')
-        .attr('fill', '#635F5D')
-        .attr('font-size', '2.7em')
+leftAxis.selectAll('text')
+    .attr('fill', '#635F5D')
+    .attr('font-size', '2.7em')
 ```
