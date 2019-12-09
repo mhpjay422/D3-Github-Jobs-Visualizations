@@ -7,6 +7,7 @@ import {
     event
 } from 'd3';
 
+
 getData();
 
 async function getData() {
