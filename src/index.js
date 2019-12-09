@@ -179,7 +179,6 @@ const margin = {
 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
-
 let hoverRect = null;
 
 const svg = select('svg')
