@@ -39,7 +39,7 @@ By implementing a simple node server, an api call is made as part of a GET reque
 
 To make the api call, "node-fetch" is used on a list of page urls and the responses are consolidated using Promise.all. The consolidated data is then sent back as the response of the GET request.
 
-```
+```javascript
 const express = require('express')
 const app = express()
 const path = require('path')
@@ -84,7 +84,7 @@ app.get('/api', (request, response) => {
 
 The data is displayed using a number of D3 tools to create the visual representation of the data.  From creating the axes using "axisLeft" and "axisBottom" to assigning the numerical domain and range on those axes using "scaleLinear" and "scaleBand". The "append" tool allows you to create an element (in the programming sense) or a construct in which you are able to style or shape into the design of choice.  
 
-```
+```javascript
 const yScale = scaleBand()
     .domain(data.map(yValue))
     .range([0, innerHeight])
@@ -127,7 +127,7 @@ leftAxis.selectAll('text')
 
  To achieve animated transitions using D3, nesting grouping is required along with executing the transitions within the merge step of the general update pattern.  This is used to transition your objects size or position by continually adding and remove a new/different object on-screen. This effect continues until the desired result is achieved resulting in an effect that is viewed as an object that is moving. 
  
- ```
+ ```javascript
  const barsG = g.append('g')
 
 const bars = barsG.selectAll('g')
