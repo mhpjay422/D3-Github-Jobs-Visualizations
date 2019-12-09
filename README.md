@@ -1,4 +1,4 @@
-# D3-Github-Jobs-Visualizations test
+# D3-Github-Jobs-Visualizations
 
 ## Architecture and Technologies
 
