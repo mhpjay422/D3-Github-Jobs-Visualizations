@@ -82,7 +82,7 @@ app.get('/api', (request, response) => {
 &nbsp;
 ### D3 Tools
 
-The data is displayed using a number of D3 tools to create the visual representation of the data.  From creating the axes using "axisLeft" and "axisBottom" to assigning the numerical domain and range on those axes using "scaleLinear" and "scaleBand". The "append" tool, is the crux of the D3 library.  It allows you to create an element (in the programming sense) or a construct in which you are able to style or shape into the design of choice.  
+The data is displayed using a number of D3 tools to create the visual representation of the data.  From creating the axes using "axisLeft" and "axisBottom" to assigning the numerical domain and range on those axes using "scaleLinear" and "scaleBand". The "append" tool allows you to create an element (in the programming sense) or a construct in which you are able to style or shape into the design of choice.  
 
 ```
 const yScale = scaleBand()
