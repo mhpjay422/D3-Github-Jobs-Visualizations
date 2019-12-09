@@ -448,16 +448,16 @@ const render = data => {
         })
     bars.exit().remove();
 
-    const colorScale = scaleOrdinal()
+    // const colorScale = scaleOrdinal()
 
-    colorScale
-        .range(schemeCategory10)
+    // colorScale
+    //     .range(schemeCategory10)
 
     barsEnter.append('rect')
         .attr('class', 'rect')
         .attr('y', d => yScale(yValue(d)))
         .attr('height', yScale.bandwidth())
-        .attr('fill', d => colorScale(yValue(d)))
+        // .attr('fill', d => colorScale(yValue(d)))
         .merge(bars.select('rect'))
         .transition().duration(1500)
         .attr('width', d => {

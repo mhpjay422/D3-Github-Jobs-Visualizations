@@ -23,6 +23,15 @@ app.use(express.static(path.join(__dirname, "public")))
 app.get('/api', (request, response) => {
 
     fetchData = () => {
+
+                // let i = 0
+                // let urls = []
+
+                // while (fetch(`https://jobs.github.com/positions.json?page=${i}`).then(res => res.json) !== {}) {
+                //     urls.push(`https://jobs.github.com/positions.json?page=${i}`)
+                //     i++
+                // }
+                
         const urls = [
             "https://jobs.github.com/positions.json?page=1",
             "https://jobs.github.com/positions.json?page=2",

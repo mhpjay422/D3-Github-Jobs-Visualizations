@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const fetch = require('node-fetch')
-const PORT = process.env.PORT || 8000;
 
 app.listen(3000, () => console.log("3000"))
 
@@ -11,6 +10,7 @@ app.use(express.static(path.join(__dirname, "public")))
 app.get('/api', (request, response) => {
 
     fetchData = () => {
+
         const urls = [
             "https://jobs.github.com/positions.json?page=1",
             "https://jobs.github.com/positions.json?page=2",

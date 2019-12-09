@@ -1,13 +1,10 @@
-//src/index.js
 import { 
     select, 
     scaleLinear, 
     scaleBand, 
     axisLeft, 
     axisBottom,  
-    event,
-    scaleOrdinal,
-    schemeCategory10,
+    event
 } from 'd3';
 
 getData();
@@ -139,17 +136,15 @@ async function getData() {
         let type = post.type;
         let company = post.company;
         
-        if (data[formatedDate]) {
-            data[formatedDate].count = data[formatedDate].count + 1
+        (data[formatedDate]) 
+            ? data[formatedDate].count = data[formatedDate].count + 1
             data[formatedDate][type] = data[formatedDate][type] + 1
-            if (data[formatedDate]['company'][company]) {
-                data[formatedDate]['company'][company] = data[formatedDate]['company'][company] + 1
-            } else {
-                data[formatedDate]['company'][company] = 1
-            }
-            
-        } else {
-            data[formatedDate] = {
+
+            (data[formatedDate]['company'][company])
+                ? data[formatedDate]['company'][company] = data[formatedDate]['company'][company] + 1
+                : data[formatedDate]['company'][company] = 1
+
+            : data[formatedDate] = {
                 'count': 0,
                 'Full Time': 0,
                 'Part Time': 0,
@@ -160,18 +155,15 @@ async function getData() {
             data[formatedDate][type] = 1
             data[formatedDate]['company'][company] = 1
         }
-    }) 
-
-    console.log(data);
-    
+    })     
 
     let finalData = []
     
     Object.keys(data).sort().forEach( key => {
         
         finalData.push([`${months[key.slice(key.length - 2)]}  ${key.slice(2,4)}`, data[key]])
-    });
-    
+    });    
+
     render(finalData)
 }
 
@@ -197,34 +189,21 @@ const zoomG = svg
     .append('g');
 
 
-const render = data => {
-
-    const toggleHighlight = id => {
-        if(id) {
-            hoverRect = id;
-            dimAxisText(id);
-        } else {
-            hoverRect = null;
-            resetAxisText()
-        }
-        highlightBar(); 
-    }    
+const render = data => { 
 
     const yScale = scaleBand()
         .domain(data.map(yValue))
         .range([0, innerHeight])
         .padding(0.1);
 
-    let maxScale = () => {
+    const maxScale = () => {
         let max = null;
         data.forEach( date => {
-            // console.log(date[1].count);
             
             if (date[1].count > max) {
                 max = date[1].count
             }
         })
-
         return max;
     }
         
@@ -280,13 +259,6 @@ const render = data => {
         .text('Number of posted open positions') 
 
 
-    const barsG = g.append('g')
-
-    const bars = barsG.selectAll('g')
-        .data(data, d => d[0])
-
-    const barsEnter = bars.enter().append('g')
-
     let tooltip = select("body").append("div")
         .attr("class", "tooltip")
         .style("visibility", "hidden");
@@ -298,7 +270,7 @@ const render = data => {
         .style("left", margin.left + "px")
         .style("height", 0)
         .style("width", 0)
-        .on('click', () => {            
+        .on('click', () => {
             tooltipClick
                 .style("visibility", "hidden")
                 .style("height", 0)
@@ -316,71 +288,47 @@ const render = data => {
             .split(',').join("*******")
 
         return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + "<br/>" + reformat
-    } 
+    }
 
-    barsEnter
-        .attr('class', 'bars')
-        .merge(bars)
-            .on('click', d => { 
-                console.log(d);
-                
-                tooltipClick
-                    .style("visibility", "visible")
-                    .style("height", innerHeight - innerHeight / 28 + "px")
-                    .style("width", innerWidth + "px")
-                    .style("cursor", "pointer")
-                    .html(stringify(d))
-            })
-            .on('mouseover', d => { 
-                toggleHighlight(d[0]);
-                tooltip.transition()
-                    .duration(200)
-                    .style("visibility", "visible")
-                tooltip.html(
-                            `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
-                            `Full Time: ${d[1]['Full Time']}` + "<br/>" +  
-                            `Part Time: ${d[1]['Part Time']}` + "<br/>" + 
-                            `Contract: ${d[1]['Contract']}`)
-                    .style("top", (event.pageY) + "px")
-                    .style("left", (event.pageX) + "px")
-            })
-            .on('mouseout', () => { 
-                toggleHighlight(null);
-                tooltip.transition()
-                    .duration(500)
-                    .style("visibility", "hidden");
-            })
-    bars.exit().remove();
-
-    const colorScale = scaleOrdinal()
-
-    colorScale
-        .range(schemeCategory10)
-    
-    barsEnter.append('rect')
-        .attr('class', 'rect')
-            .attr('y', d => yScale(yValue(d)))
-            .attr('height', yScale.bandwidth())
-            .attr('fill', d => colorScale(yValue(d)))
-        .merge(bars.select('rect'))
-                .transition().duration(1500)
-                .attr('width', d => {                    
-                    if (d[1].count === 0) {
-                       return 0 
-                    } else {
-                        return xScale(xValue(d))
-                    }
-                });
+    const toggleHighlight = id => {
+        if (id) {
+            hoverRect = id;
+            dimAxisText(id);
+        } else {
+            hoverRect = null;
+            resetAxisText()
+        }
+        highlightBar();
+    }
 
     const highlightBar = () => {
 
         barsEnter.select('rect')
             .attr('visibility', d =>
-                d[0] === hoverRect || hoverRect === null 
-                ? 1 
-                : .4
+                d[0] === hoverRect || hoverRect === null ?
+                1 :
+                .4
             )
     }
+
+    const barsG = g.append('g')
+
+    const bars = barsG.selectAll('g')
+        .data(data, d => d[0])
+
+    const barsEnter = bars.enter().append('g')
+    
+    barsEnter.append('rect')
+        .attr('class', 'rect')
+            .attr('y', d => yScale(yValue(d)))
+            .attr('height', yScale.bandwidth())
+        .merge(bars.select('rect'))
+                .transition().duration(1500)
+                .attr('width', d => {                    
+                    (d[1].count === 0) 
+                        ? 0 
+                        : xScale(xValue(d))
+                });
     
     barsEnter.append('text')
         .attr('class', 'rectText')
@@ -391,6 +339,38 @@ const render = data => {
     .merge(bars.select('text'))
             .transition().duration(1500)
             .attr('x', d => xScale(xValue(d)) - 12);
+
+    barsEnter
+        .attr('class', 'bars')
+        .merge(bars)
+        .on('click', d => {
+            tooltipClick
+                .style("visibility", "visible")
+                .style("height", innerHeight - innerHeight / 28 + "px")
+                .style("width", innerWidth + "px")
+                .style("cursor", "pointer")
+                .html(stringify(d))
+        })
+        .on('mouseover', d => {
+            toggleHighlight(d[0]);
+            tooltip.transition()
+                .duration(200)
+                .style("visibility", "visible")
+            tooltip.html(
+                    `Open positions: ${d[1]['count']}` + "<br/>" + "<br/>" +
+                    `Full Time: ${d[1]['Full Time']}` + "<br/>" +
+                    `Part Time: ${d[1]['Part Time']}` + "<br/>" +
+                    `Contract: ${d[1]['Contract']}`)
+                .style("top", (event.pageY) + "px")
+                .style("left", (event.pageX) + "px")
+        })
+        .on('mouseout', () => {
+            toggleHighlight(null);
+            tooltip.transition()
+                .duration(500)
+                .style("visibility", "hidden");
+        })
+    bars.exit().remove();
         
     g.append('text')
         .attr('class', 'title')
