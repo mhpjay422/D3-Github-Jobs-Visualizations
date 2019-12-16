@@ -7,7 +7,6 @@ import {
     event
 } from 'd3';
 
-
 getData();
 
 async function getData() {
@@ -75,13 +74,15 @@ async function getData() {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0,
+            'company': {}
         },
         '2019-05': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0,
+            'company': {}
         },
         '2019-06': {
             'count': 0,
@@ -137,15 +138,9 @@ async function getData() {
         let type = post.type;
         let company = post.company;
         
-        (data[formatedDate]) 
-            ? data[formatedDate].count = data[formatedDate].count + 1
-            data[formatedDate][type] = data[formatedDate][type] + 1
+        if (!data[formatedDate]) {
 
-            (data[formatedDate]['company'][company])
-                ? data[formatedDate]['company'][company] = data[formatedDate]['company'][company] + 1
-                : data[formatedDate]['company'][company] = 1
-
-            : data[formatedDate] = {
+            data[formatedDate] = {
                 'count': 0,
                 'Full Time': 0,
                 'Part Time': 0,
@@ -154,7 +149,22 @@ async function getData() {
             }
             data[formatedDate].count = 1
             data[formatedDate][type] = 1
-            data[formatedDate]['company'][company] = 1
+            data[formatedDate]['company'][post.company] = 1
+             
+        } else {
+
+            data[formatedDate].count = data[formatedDate].count + 1
+            data[formatedDate][type] = data[formatedDate][type] + 1
+            // console.log(data);
+
+            if (data[formatedDate]['company'][post.company]) {
+                data[formatedDate]['company'][post.company] = 1
+                // console.log("hello");
+            } else {
+                data[formatedDate]['company'][post.company] = data[formatedDate]['company'][post.company] + 1
+            }
+
+            
         }
     })     
 
@@ -180,6 +190,7 @@ const margin = {
 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
+
 let hoverRect = null;
 
 const svg = select('svg')
@@ -304,11 +315,13 @@ const render = data => {
     const highlightBar = () => {
 
         barsEnter.select('rect')
-            .attr('visibility', d =>
-                d[0] === hoverRect || hoverRect === null ?
-                1 :
-                .4
-            )
+            .attr('visibility', d => {
+                if (d[0] === hoverRect || hoverRect === null) {
+                    return 1
+                } else {
+                    return .4
+                }
+            })
     }
 
     const barsG = g.append('g')
@@ -325,9 +338,11 @@ const render = data => {
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => {                    
-                    (d[1].count === 0) 
-                        ? 0 
-                        : xScale(xValue(d))
+                    if (d[1].count === 0) {
+                        return 0
+                    } else {
+                        return xScale(xValue(d))
+                    }
                 });
     
     barsEnter.append('text')
