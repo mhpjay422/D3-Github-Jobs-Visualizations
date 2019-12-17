@@ -5,7 +5,9 @@ const fetch = require('node-fetch')
 
 app.listen(3000, () => console.log("3000"))
 
-app.use(express.static(path.join(__dirname, "public")))
+// app.use(express.static(root))
+app.use(express.static(path.join(__dirname, "./")))
+// app.use(express.static(path.join(__dirname, "public")))
 
 app.get('/api', (request, response) => {
 
