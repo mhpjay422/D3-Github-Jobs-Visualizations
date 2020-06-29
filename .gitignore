@@ -6,9 +6,9 @@
 
 # Ignore bundler config.
 
-# /.dist
-# main.js
-# main.js.map
+/.dist
+main.js
+main.js.map
 
 /.alpha
 alpha.js
