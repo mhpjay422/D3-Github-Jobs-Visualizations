@@ -5,10 +5,9 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         filename: "main.js", 
-        path: path.resolve(__dirname, 'public'),
+        path: path.resolve(__dirname, './'),
     },
     devtool: "source-map",
     resolve: {
         extensions: [".js", "*"]
-    }
-};
+    }};

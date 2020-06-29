@@ -2,10 +2,18 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const fetch = require('node-fetch')
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => console.log("3000"))
+app.set('port', PORT);
 
-app.use(express.static(path.join(__dirname, "public")))
+app.listen(PORT, () => {
+    console.log(__dirname);
+    console.log(`listening on ${PORT}`)
+})
+
+// app.use(express.static(root))
+app.use(express.static(path.join(__dirname, "./")))
+// app.use(express.static(path.join(__dirname, "public")))
 
 app.get('/api', (request, response) => {
 

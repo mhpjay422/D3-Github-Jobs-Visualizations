@@ -42,7 +42,7 @@ async function getData() {
 
     let db = [];
     let data = {
-        '2018-10': {
+        '2018-12': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
@@ -74,13 +74,15 @@ async function getData() {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0,
+            'company': {}
         },
         '2019-05': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
-            'Contract': 0
+            'Contract': 0,
+            'company': {}
         },
         '2019-06': {
             'count': 0,
@@ -124,6 +126,48 @@ async function getData() {
             'Contract': 0, 
             'company': {}
         },
+        '2019-12': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-01': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-02': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-03': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-04': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-05': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
     }
 
     json.forEach(page => {        
@@ -136,15 +180,9 @@ async function getData() {
         let type = post.type;
         let company = post.company;
         
-        (data[formatedDate]) 
-            ? data[formatedDate].count = data[formatedDate].count + 1
-            data[formatedDate][type] = data[formatedDate][type] + 1
+        if (!data[formatedDate]) {
 
-            (data[formatedDate]['company'][company])
-                ? data[formatedDate]['company'][company] = data[formatedDate]['company'][company] + 1
-                : data[formatedDate]['company'][company] = 1
-
-            : data[formatedDate] = {
+            data[formatedDate] = {
                 'count': 0,
                 'Full Time': 0,
                 'Part Time': 0,
@@ -153,7 +191,24 @@ async function getData() {
             }
             data[formatedDate].count = 1
             data[formatedDate][type] = 1
-            data[formatedDate]['company'][company] = 1
+            data[formatedDate]['company'][post.company] = 1
+             
+        } else {
+
+            data[formatedDate].count = data[formatedDate].count + 1
+            data[formatedDate][type] = data[formatedDate][type] + 1
+
+
+            if (!data[formatedDate]['company'][post.company]) {
+
+                data[formatedDate]['company'][post.company] = 1
+
+            } else {
+
+                data[formatedDate]['company'][post.company] = data[formatedDate]['company'][post.company] + 1
+            }
+
+            
         }
     })     
 
@@ -285,7 +340,8 @@ const render = data => {
             .replace("}", "")
             .split('"').join("")
             .replace(", Inc", " Inc")
-            .split(',').join("*******")
+            .split(":").join(": ")
+            .split(',').join("  *******")
 
         return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + "<br/>" + reformat
     }
@@ -304,11 +360,13 @@ const render = data => {
     const highlightBar = () => {
 
         barsEnter.select('rect')
-            .attr('visibility', d =>
-                d[0] === hoverRect || hoverRect === null ?
-                1 :
-                .4
-            )
+            .attr('visibility', d => {
+                if (d[0] === hoverRect || hoverRect === null) {
+                    return 1
+                } else {
+                    return .4
+                }
+            })
     }
 
     const barsG = g.append('g')
@@ -325,9 +383,11 @@ const render = data => {
         .merge(bars.select('rect'))
                 .transition().duration(1500)
                 .attr('width', d => {                    
-                    (d[1].count === 0) 
-                        ? 0 
-                        : xScale(xValue(d))
+                    if (d[1].count === 0) {
+                        return 0
+                    } else {
+                        return xScale(xValue(d))
+                    }
                 });
     
     barsEnter.append('text')
@@ -346,7 +406,7 @@ const render = data => {
         .on('click', d => {
             tooltipClick
                 .style("visibility", "visible")
-                .style("height", innerHeight - innerHeight / 28 + "px")
+                .style("height", innerHeight - innerHeight / 55 + "px")
                 .style("width", innerWidth + "px")
                 .style("cursor", "pointer")
                 .html(stringify(d))

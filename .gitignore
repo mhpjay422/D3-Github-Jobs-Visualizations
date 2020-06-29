@@ -5,15 +5,14 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
-bundle.js
-bundle.js.map
 
-/.dist
+# /.dist
 main.js
 main.js.map
 
-
+/.alpha
+alpha.js
+alphaserver.js
 
 # Ignore all logfiles and tempfiles.
 /log/*

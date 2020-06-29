@@ -2,6 +2,7 @@
 
 ## Architecture and Technologies
 
+
 D3-Github-Jobs-Visualizations was built using:
 
 * D3 v5.12.0
