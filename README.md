@@ -25,7 +25,7 @@ D3-Github-Jobs-Visualizations is a visualization that displays information about
 
 [Live Site](http://www.d3githubjobsvisualization.com/)
 
-gif placeholder
+![](./public/Viz.gif)
 &nbsp;
 &nbsp;
 &nbsp;
