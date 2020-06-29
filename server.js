@@ -3,11 +3,11 @@ const app = express()
 const path = require('path')
 const fetch = require('node-fetch')
 const host = '0.0.0.0';
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-app.set('port', port);
+app.set('port', PORT);
 
-app.listen(port, host, function () {
+app.listen(PORT, host, function () {
     console.log("Server started.......");
 });
 
