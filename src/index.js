@@ -42,7 +42,7 @@ async function getData() {
 
     let db = [];
     let data = {
-        '2018-10': {
+        '2018-12': {
             'count': 0,
             'Full Time': 0,
             'Part Time': 0,
@@ -126,6 +126,48 @@ async function getData() {
             'Contract': 0, 
             'company': {}
         },
+        '2019-12': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-01': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-02': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-03': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-04': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
+        '2020-05': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        },
     }
 
     json.forEach(page => {        
@@ -155,12 +197,14 @@ async function getData() {
 
             data[formatedDate].count = data[formatedDate].count + 1
             data[formatedDate][type] = data[formatedDate][type] + 1
-            // console.log(data);
 
-            if (data[formatedDate]['company'][post.company]) {
+
+            if (!data[formatedDate]['company'][post.company]) {
+
                 data[formatedDate]['company'][post.company] = 1
-                // console.log("hello");
+
             } else {
+
                 data[formatedDate]['company'][post.company] = data[formatedDate]['company'][post.company] + 1
             }
 
@@ -296,7 +340,8 @@ const render = data => {
             .replace("}", "")
             .split('"').join("")
             .replace(", Inc", " Inc")
-            .split(',').join("*******")
+            .split(":").join(": ")
+            .split(',').join("  *******")
 
         return d[0] + "<br/>" + "<br/>" + "Companies and their number of postings" + "<br/>" + "<br/>" + "<br/>" + reformat
     }
@@ -361,7 +406,7 @@ const render = data => {
         .on('click', d => {
             tooltipClick
                 .style("visibility", "visible")
-                .style("height", innerHeight - innerHeight / 28 + "px")
+                .style("height", innerHeight - innerHeight / 55 + "px")
                 .style("width", innerWidth + "px")
                 .style("cursor", "pointer")
                 .html(stringify(d))
