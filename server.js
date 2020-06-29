@@ -2,14 +2,14 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const fetch = require('node-fetch')
-const PORT = process.env.PORT || 3000;
+const host = '0.0.0.0';
+const port = process.env.PORT || 5000;
 
-app.set('port', PORT);
+app.set('port', port);
 
-app.listen(PORT, () => {
-    console.log(__dirname);
-    console.log(`listening on ${PORT}`)
-})
+app.listen(port, host, function () {
+    console.log("Server started.......");
+});
 
 // app.use(express.static(root))
 app.use(express.static(path.join(__dirname, "./")))
