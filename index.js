@@ -7,8 +7,6 @@ import {
     event
 } from 'd3';
 
-// const axios = require('axios');
-
 document.addEventListener('DOMContentLoaded', () => {
 
 getData();

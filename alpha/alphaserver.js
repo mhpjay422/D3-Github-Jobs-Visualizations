@@ -8,6 +8,10 @@ app.listen(3000, () => console.log("3000"))
 
 // app.use(express.static(path.join(__dirname, "dist")))
 app.use(express.static(path.join(__dirname, "public")))
+// app.use(express.static(root))
+// app.use(express.static(__dirname));
+// app.use(express.static(path.join(__dirname, "public")))
+// app.use(express.static('public'))
 
 // app.get('/', function (req, res) {
 //     res.sendFile(__dirname + '/public/index.html');
