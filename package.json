@@ -20,7 +20,7 @@
   "scripts": {
     "server": "webpack-dev-server",
     "webpack": "webpack",
-    "start": "node main.js",
+    "start": "node server.js",
     "http": "http-server",
     "live": "live-server"
   },

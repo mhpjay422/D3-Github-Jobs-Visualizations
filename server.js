@@ -12,9 +12,16 @@ app.use(express.static(path.join(__dirname, "./")))
 // app.use(express.static(path.join(__dirname, "public")))
 // app.use(express.static('public'))
 
-app.get('/', (request, res) => {
-    res.sendFile(path.join(__dirname, './index.html'))
-})
+// app.get('/', (request, res) => {
+//     res.sendFile(path.join(__dirname, './index.html'))
+// })
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
+app.get('/', function (request, response) {
+    response.render('pages/index');
+});
 
 app.get('/api', (request, response) => {
 
