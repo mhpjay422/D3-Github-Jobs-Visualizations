@@ -7,14 +7,14 @@ const PORT = process.env.PORT || 5000;
 
 app.set('port', PORT);
 
-app.listen(PORT, host, function () {
-    console.log("Server started.......");
-});
-
 // app.use(express.static(root))
 app.use(express.static(path.join(__dirname, "./")))
 // app.use(express.static(path.join(__dirname, "public")))
 // app.use(express.static('public'))
+
+app.get('/', (request, res) => {
+    res.sendFile(path.join(__dirname, './index.html'))
+})
 
 app.get('/api', (request, response) => {
 
@@ -43,4 +43,8 @@ app.get('/api', (request, response) => {
     fetchData().then(arrayOfResponses =>
         response.send(arrayOfResponses)
     );
+});
+
+app.listen(PORT, host, function () {
+    console.log("Server started.......");
 });
