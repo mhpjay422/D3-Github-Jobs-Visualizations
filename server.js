@@ -9,19 +9,20 @@ app.set('port', PORT);
 
 // app.use(express.static(root))
 app.use(express.static(path.join(__dirname, "./")))
+// app.use(express.static(__dirname));
 // app.use(express.static(path.join(__dirname, "public")))
 // app.use(express.static('public'))
 
-// app.get('/', (request, res) => {
-//     res.sendFile(path.join(__dirname, './index.html'))
-// })
+app.get('/', (request, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'))
+})
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'ejs');
 
-app.get('/', function (request, response) {
-    response.render('pages/index');
-});
+// app.get('/', function (request, response) {
+//     response.render('pages/index');
+// });
 
 app.get('/api', (request, response) => {
 
