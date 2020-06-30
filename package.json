@@ -18,11 +18,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "server": "webpack-dev-server",
     "webpack": "webpack",
-    "start": "node server.js",
-    "http": "http-server",
-    "live": "live-server"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
