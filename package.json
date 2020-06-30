@@ -19,7 +19,7 @@
   "scripts": {
     "server": "webpack-dev-server",
     "webpack": "webpack",
-    "build": "webpack --mode=development --watch",
+    // "build": "webpack --mode=development --watch",
     "start": "node server.js",
     "http": "http-server",
     "live": "live-server"
