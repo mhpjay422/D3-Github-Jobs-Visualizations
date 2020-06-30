@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "./")))
 // })
 
 app.set('views', __dirname + '/views');
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 
 app.get('/', function (request, response) {
     response.render('pages/index');
