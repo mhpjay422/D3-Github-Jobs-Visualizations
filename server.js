@@ -14,6 +14,7 @@ app.listen(PORT, host, function () {
 // app.use(express.static(root))
 app.use(express.static(path.join(__dirname, "./")))
 // app.use(express.static(path.join(__dirname, "public")))
+// app.use(express.static('public'))
 
 app.get('/api', (request, response) => {
 
