@@ -23,7 +23,7 @@ D3-Github-Jobs-Visualizations was built using:
 
 D3-Github-Jobs-Visualizations is a visualization that displays information about open positions on the Github Jobs website using a barchart. It was a Javascript project for the App Academy software engineering bootcamp.
 
-[Live Site](http://www.d3githubjobsvisualization.com/)
+[Live Site](http://d3githubjobsvisualization.com/)
 
 ![](./public/Viz.gif)
 &nbsp;
@@ -45,10 +45,16 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const fetch = require('node-fetch')
+const host = '0.0.0.0';
+const PORT = process.env.PORT || 5000;
 
-app.listen(3000, () => console.log("3000"))
+app.set('port', PORT);
 
-app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, "./")))
+
+app.get('/', (request, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'))
+})
 
 app.get('/api', (request, response) => {
 
@@ -77,6 +83,10 @@ app.get('/api', (request, response) => {
     fetchData().then(arrayOfResponses =>
         response.send(arrayOfResponses)
     );
+});
+
+app.listen(PORT, host, function () {
+    console.log("Server started.......");
 });
 ```
 &nbsp;
