@@ -20,6 +20,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node server.js",
+    "webpack": "webpack --mode=development --watch",
     "heroku-postbuild": "webpack -p"
   },
   "repository": {

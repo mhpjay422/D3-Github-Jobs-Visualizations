@@ -44,97 +44,6 @@ async function getData() {
 
     let db = [];
     let data = {
-        '2018-12': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0,
-            'company': {}
-        },
-        '2019-01': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-02': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-03': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-04': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0,
-            'company': {}
-        },
-        '2019-05': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0,
-            'company': {}
-        },
-        '2019-06': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-07': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-08': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-09': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-10': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-11': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0, 
-            'company': {}
-        },
-        '2019-12': {
-            'count': 0,
-            'Full Time': 0,
-            'Part Time': 0,
-            'Contract': 0,
-            'company': {}
-        },
         '2020-01': {
             'count': 0,
             'Full Time': 0,
@@ -170,6 +79,55 @@ async function getData() {
             'Contract': 0,
             'company': {}
         },
+        '2020-06': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-07': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-08': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-09': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-10': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-11': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0, 
+            'company': {}
+        },
+        '2020-12': {
+            'count': 0,
+            'Full Time': 0,
+            'Part Time': 0,
+            'Contract': 0,
+            'company': {}
+        }
     }
 
     json.forEach(page => {        
